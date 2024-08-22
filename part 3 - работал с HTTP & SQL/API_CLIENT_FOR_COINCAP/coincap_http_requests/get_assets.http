@@ -1,0 +1,6 @@
+### docs.coincap.io get asssets
+# GET api.coincap.io/v2/assets?limit=5
+
+GET api.coincap.io/v2/assets?limit=5
+
+###

@@ -1,0 +1,8 @@
+### simple get
+#@no-log
+DELETE http://localhost:8080/users
+Content-Type: application/json
+
+{
+	"ID": 5
+}

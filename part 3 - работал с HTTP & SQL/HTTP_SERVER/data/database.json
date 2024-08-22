@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "ID": 1,
+      "Name": "Vasya"
+    },
+    {
+      "ID": 2,
+      "Name": "Petya"
+    },
+    {
+      "ID": 3,
+      "Name": ""
+    },
+    {
+      "ID": 4,
+      "Name": "Evgeniy Serbinov"
+    },
+    {
+      "ID": 0,
+      "Name": "Misha abc"
+    },
+    {
+      "ID": 0,
+      "Name": "Kostya"
+    },
+    {
+      "ID": 0,
+      "Name": "TEST 100"
+    }
+  ]
+}
