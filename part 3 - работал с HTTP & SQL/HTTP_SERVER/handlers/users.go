@@ -90,7 +90,6 @@ func deleteUser(w http.ResponseWriter, r *http.Request) {
 
 	_ = json.Unmarshal(body, &requestData)
 
-	//delUserErr := db.DeleteUser(requestData.ID)
 	if err := db.ReadDatabase(); err != nil {
 		http.Error(w, "Failed to load database", http.StatusInternalServerError)
 	}
