@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+// users
+
 func HandleUsers(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
@@ -18,6 +20,8 @@ func HandleUsers(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotImplemented)
 	}
 }
+
+/// orders
 
 func HandleOrders(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {

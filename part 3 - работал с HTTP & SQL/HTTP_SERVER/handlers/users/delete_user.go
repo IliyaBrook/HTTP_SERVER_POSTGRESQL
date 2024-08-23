@@ -1,45 +1,33 @@
 package users
 
 import (
-	"HTTP_SERVER/handlers"
+	"HTTP_SERVER/sharable"
+	"HTTP_SERVER/utils"
 	"encoding/json"
 	"io"
 	"net/http"
 )
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, "Failed to read request body", http.StatusInternalServerError)
-		return
-	}
+	body, readBodyErr := io.ReadAll(r.Body)
+	utils.HandleServerError(readBodyErr, w, "Failed to read request body")
 
 	var requestData struct {
 		ID int `json:"ID"`
 	}
 
-	_ = json.Unmarshal(body, &requestData)
+	marshallBodyErr := json.Unmarshal(body, &requestData)
+	utils.HandleServerError(marshallBodyErr, w, "Failed to marshal body")
 
-	if err := handlers.DbInst.ReadDatabase(); err != nil {
-		http.Error(w, "Failed to load database", http.StatusInternalServerError)
-	}
-
-	for i, user := range handlers.DbInst.Users {
+	for i, user := range sharable.DbInst.Users {
 		if user.ID == requestData.ID {
-			handlers.DbInst.Users = append(handlers.DbInst.Users[:i], handlers.DbInst.Users[i+1:]...)
+			sharable.DbInst.Users = append(sharable.DbInst.Users[:i], sharable.DbInst.Users[i+1:]...)
 			break
 		}
 	}
 
-	if err := handlers.DbInst.SaveDatabase(); err != nil {
-		http.Error(w, "Failed to save database", http.StatusInternalServerError)
-	}
-
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Failed to delete user from the database"))
-		return
-	}
+	saveDbErr := sharable.DbInst.SaveDatabase()
+	utils.HandleServerError(saveDbErr, w, "Failed to save database")
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("User deleted successfully"))

@@ -1,4 +1,4 @@
-package handlers
+package sharable
 
 import "HTTP_SERVER/data"
 
