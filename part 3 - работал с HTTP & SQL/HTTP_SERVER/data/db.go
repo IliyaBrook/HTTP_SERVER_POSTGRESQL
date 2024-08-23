@@ -38,3 +38,5 @@ func (d *DB) SaveDatabase() error {
 
 	return nil
 }
+
+var DbInst = &DB{}

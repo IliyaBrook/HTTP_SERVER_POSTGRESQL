@@ -1,7 +1,7 @@
 package users
 
 import (
-	"HTTP_SERVER/sharable"
+	"HTTP_SERVER/data"
 	"HTTP_SERVER/utils"
 	"encoding/json"
 	"io"
@@ -19,14 +19,14 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	marshallBodyErr := json.Unmarshal(body, &requestData)
 	utils.HandleServerError(marshallBodyErr, w, "Failed to marshal body")
 
-	for i, user := range sharable.DbInst.Users {
+	for i, user := range data.DbInst.Users {
 		if user.ID == requestData.ID {
-			sharable.DbInst.Users = append(sharable.DbInst.Users[:i], sharable.DbInst.Users[i+1:]...)
+			data.DbInst.Users = append(data.DbInst.Users[:i], data.DbInst.Users[i+1:]...)
 			break
 		}
 	}
 
-	saveDbErr := sharable.DbInst.SaveDatabase()
+	saveDbErr := data.DbInst.SaveDatabase()
 	utils.HandleServerError(saveDbErr, w, "Failed to save database")
 
 	w.WriteHeader(http.StatusOK)

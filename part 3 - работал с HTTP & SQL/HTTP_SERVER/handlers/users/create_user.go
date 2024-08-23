@@ -2,7 +2,6 @@ package users
 
 import (
 	"HTTP_SERVER/data"
-	"HTTP_SERVER/sharable"
 	"HTTP_SERVER/utils"
 	"encoding/json"
 	"net/http"
@@ -14,10 +13,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	instUser := &data.User{}
 	utils.HandleServerError(err, w, "Failed to marshal orders data")
 
-	instUser.ID = len(sharable.DbInst.Users) + 1
-	sharable.DbInst.Users = append(sharable.DbInst.Users, newUser)
+	instUser.ID = len(data.DbInst.Users) + 1
+	data.DbInst.Users = append(data.DbInst.Users, newUser)
 
-	err = sharable.DbInst.SaveDatabase()
+	err = data.DbInst.SaveDatabase()
 	utils.HandleServerError(err, w, "Failed to save database")
 
 	w.WriteHeader(http.StatusCreated)
