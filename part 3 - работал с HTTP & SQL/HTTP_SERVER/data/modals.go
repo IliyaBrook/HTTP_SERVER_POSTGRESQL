@@ -6,8 +6,9 @@ type DB struct {
 }
 
 type User struct {
-	ID   int    `json:"ID"`
-	Name string `json:"Name"`
+	ID     int    `json:"ID"`
+	Name   string `json:"Name"`
+	Orders []int  `json:"Orders"`
 }
 
 type Order struct {

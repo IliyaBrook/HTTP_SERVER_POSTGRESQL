@@ -11,10 +11,10 @@ import (
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	var newUser data.User
 	err := json.NewDecoder(r.Body).Decode(&newUser)
-
+	instUser := &data.User{}
 	utils.HandleServerError(err, w, "Failed to marshal orders data")
 
-	sharable.UserInst.ID = len(sharable.DbInst.Users) + 1
+	instUser.ID = len(sharable.DbInst.Users) + 1
 	sharable.DbInst.Users = append(sharable.DbInst.Users, newUser)
 
 	err = sharable.DbInst.SaveDatabase()

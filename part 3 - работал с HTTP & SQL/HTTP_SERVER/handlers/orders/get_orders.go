@@ -10,9 +10,7 @@ import (
 )
 
 func GetOrders(w http.ResponseWriter, r *http.Request) {
-
 	readOrdersErr := sharable.DbInst.ReadDatabase()
-	var ordersDb = sharable.DbInst.Orders
 	utils.HandleServerError(readOrdersErr, w, "Failed to read orders")
 	query := r.URL.Query().Get("UserID")
 
@@ -20,11 +18,11 @@ func GetOrders(w http.ResponseWriter, r *http.Request) {
 	var err error
 
 	if query == "" {
-		resp, err = json.Marshal(ordersDb)
+		resp, err = json.Marshal(sharable.DbInst.Orders)
 	} else {
 		queryId, _ := strconv.Atoi(query)
 		var filterOrders []data.Order
-		for _, order := range ordersDb {
+		for _, order := range sharable.DbInst.Orders {
 			if queryId == order.UserID {
 				filterOrders = append(filterOrders, order)
 			}
