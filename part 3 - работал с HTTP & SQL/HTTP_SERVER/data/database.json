@@ -28,5 +28,15 @@
       "ID": 0,
       "Name": "TEST 100"
     }
-  ]
+  ],
+	"orders": [
+    {
+      "ID": 5,
+      "UserID": 2,
+      "Name": "iPhone",
+      "Quantity": 1,
+      "Price": 999.99,
+      "Description": "Brand new iPhone 12 Pro Max"
+    }
+	]
 }
