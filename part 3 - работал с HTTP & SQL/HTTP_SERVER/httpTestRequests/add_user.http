@@ -1,6 +1,7 @@
 ### GET request to example server
 POST http://localhost:8080/users
 Content-Type: application/json
+x-id: 1
 
 {
   "Name": "TEST 100"
