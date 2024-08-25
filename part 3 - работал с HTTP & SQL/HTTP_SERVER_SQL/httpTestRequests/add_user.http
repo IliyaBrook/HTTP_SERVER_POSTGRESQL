@@ -1,8 +1,11 @@
 ### GET request to example server
+## name, email, password, registered_at
 POST http://localhost:8080/users
 Content-Type: application/json
 x-id: 1
 
 {
-  "Name": "TEST 100"
+  "name": "test user 1",
+  "email": "user20@test.com",
+  "password": "123456"
 }

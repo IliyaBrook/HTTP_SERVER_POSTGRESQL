@@ -4,12 +4,37 @@ import (
 	"HTTP_SERVER/utils"
 	"encoding/json"
 	"fmt"
+	"github.com/jmoiron/sqlx"
+	_ "github.com/jmoiron/sqlx"
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
+	"log"
 	"os"
 )
 
 var filePath = utils.ResolvePath("data/database.json")
 
-func (d *DB) ReadDatabase() error {
+var DB *sqlx.DB
+
+func InitDataBase() {
+	// load environment file
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	// env from .env
+	DB, err = sqlx.Open("postgres", "host=localhost port=5432 user="+os.Getenv("DB_USER")+" password="+os.Getenv("DB_PASSWORD")+" dbname=postgres sslmode=disable search_path=golang_course")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := DB.Ping(); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Connected to database")
+}
+
+func (d *DbStruct) ReadDatabase() error {
 
 	file, err := os.ReadFile(filePath)
 
@@ -26,7 +51,7 @@ func (d *DB) ReadDatabase() error {
 	return nil
 }
 
-func (d *DB) SaveDatabase() error {
+func (d *DbStruct) SaveDatabase() error {
 	file, err := json.MarshalIndent(d, "", "  ")
 	if err != nil {
 		return err
@@ -39,4 +64,4 @@ func (d *DB) SaveDatabase() error {
 	return nil
 }
 
-var DbInst = &DB{}
+var DbInst = &DbStruct{}

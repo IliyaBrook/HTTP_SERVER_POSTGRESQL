@@ -20,7 +20,7 @@ func GetOrders(w http.ResponseWriter, r *http.Request) {
 		resp, err = json.Marshal(data.DbInst.Orders)
 	} else {
 		queryId, _ := strconv.Atoi(query)
-		var filterOrders []data.Order
+		var filterOrders []data.OrderStruct
 		for _, order := range data.DbInst.Orders {
 			if queryId == order.UserID {
 				filterOrders = append(filterOrders, order)
@@ -29,7 +29,7 @@ func GetOrders(w http.ResponseWriter, r *http.Request) {
 		resp, err = json.Marshal(filterOrders)
 	}
 
-	utils.HandleServerError(err, w, "Failed to marshal orders data")
+	utils.HandleServerError(err, w, "Failed to marshal orders data", "log")
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

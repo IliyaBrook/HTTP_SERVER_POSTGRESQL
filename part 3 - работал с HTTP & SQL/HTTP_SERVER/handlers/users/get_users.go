@@ -29,7 +29,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 		}
 		if userFound.ID == 0 {
 			w.WriteHeader(http.StatusNotFound)
-			w.Write([]byte("User not found"))
+			w.Write([]byte("UserStruct not found"))
 			return
 		}
 		resp, err = json.Marshal(userFound)

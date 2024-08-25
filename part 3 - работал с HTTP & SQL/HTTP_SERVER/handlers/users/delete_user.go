@@ -30,5 +30,5 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	utils.HandleServerError(saveDbErr, w, "Failed to save database")
 
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("User deleted successfully"))
+	w.Write([]byte("UserStruct deleted successfully"))
 }
