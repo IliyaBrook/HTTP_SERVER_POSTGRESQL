@@ -10,7 +10,7 @@ import (
 
 func GetOrders(w http.ResponseWriter, r *http.Request) {
 	readOrdersErr := data.DbInst.ReadDatabase()
-	utils.HandleServerError(readOrdersErr, w, "Failed to read orders")
+	utils.HandleServerError(readOrdersErr, w, "Failed to read orders", "test")
 	query := r.URL.Query().Get("UserID")
 
 	var resp []byte
@@ -29,7 +29,7 @@ func GetOrders(w http.ResponseWriter, r *http.Request) {
 		resp, err = json.Marshal(filterOrders)
 	}
 
-	utils.HandleServerError(err, w, "Failed to marshal orders data", "log")
+	utils.HandleServerError(err, w, "Failed to marshal orders data", "log", "test")
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

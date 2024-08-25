@@ -43,12 +43,12 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
-		utils.HandleServerError(err, w, "Failed to marshal users data")
+		utils.HandleServerError(err, w, "Failed to marshal users data", "test")
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	_, writeUserErr := w.Write(resp)
-	utils.HandleServerError(writeUserErr, w, "Failed to write response")
+	utils.HandleServerError(writeUserErr, w, "Failed to write response", "test")
 }

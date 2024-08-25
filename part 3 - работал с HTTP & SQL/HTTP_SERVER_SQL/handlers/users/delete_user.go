@@ -10,14 +10,14 @@ import (
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	body, readBodyErr := io.ReadAll(r.Body)
-	utils.HandleServerError(readBodyErr, w, "Failed to read request body")
+	utils.HandleServerError(readBodyErr, w, "Failed to read request body", "test")
 
 	var requestData struct {
 		ID int `json:"ID"`
 	}
 
 	marshallBodyErr := json.Unmarshal(body, &requestData)
-	utils.HandleServerError(marshallBodyErr, w, "Failed to marshal body")
+	utils.HandleServerError(marshallBodyErr, w, "Failed to marshal body", "test")
 
 	for i, user := range data.DbInst.Users {
 		if user.ID == requestData.ID {
@@ -27,7 +27,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	saveDbErr := data.DbInst.SaveDatabase()
-	utils.HandleServerError(saveDbErr, w, "Failed to save database")
+	utils.HandleServerError(saveDbErr, w, "Failed to save database", "test")
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("UserStruct deleted successfully"))
