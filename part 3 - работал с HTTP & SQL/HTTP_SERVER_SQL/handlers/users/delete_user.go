@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func DeleteUser(w http.ResponseWriter, r *http.Request) {
+func DeleteUser2(w http.ResponseWriter, r *http.Request) {
 	body, readBodyErr := io.ReadAll(r.Body)
 	utils.HandleServerError(readBodyErr, w, "Failed to read request body", "test")
 
@@ -31,4 +31,23 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("UserStruct deleted successfully"))
+}
+
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	body, readBodyErr := io.ReadAll(r.Body)
+
+	utils.HandleServerError(readBodyErr, w, "Failed to read request body", "test")
+
+	var requestData struct {
+		ID int `json:"id" db:"id"`
+	}
+
+	err := json.Unmarshal(body, &requestData)
+	utils.HandleServerError(err, w, "Failed to marshal body", "log")
+
+	//exec, err := data.DB.Exec("DELETE FROM users WHERE ID=?", body[0])
+	//if err != nil {
+	//	return
+	//}
+
 }
