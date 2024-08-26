@@ -16,7 +16,7 @@ var filePath = utils.ResolvePath("data/database.json")
 
 var DB *sqlx.DB
 
-func InitDataBase() {
+func InitDataBase() *sqlx.DB {
 	// load environment file
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -32,6 +32,7 @@ func InitDataBase() {
 		log.Fatal(err)
 	}
 	fmt.Println("Connected to database")
+	return DB
 }
 
 func (d *DbStruct) ReadDatabase() error {
