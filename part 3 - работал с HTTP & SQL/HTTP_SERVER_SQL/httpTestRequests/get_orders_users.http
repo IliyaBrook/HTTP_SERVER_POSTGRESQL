@@ -1,2 +1,0 @@
-GET http://localhost:8080/orders?UserID=2
-x-id: 1

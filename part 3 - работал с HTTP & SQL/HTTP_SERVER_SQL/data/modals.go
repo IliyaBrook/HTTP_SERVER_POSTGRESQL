@@ -3,8 +3,8 @@ package data
 import "time"
 
 type DbStruct struct {
-	Users  []UserStruct  `json:"users" db:"users"`
-	Orders []OrderStruct `json:"orders" db:"orders"`
+	Users  []UserStruct    `json:"users" db:"users"`
+	Orders []ProductStruct `json:"orders" db:"orders"`
 }
 
 type UserStruct struct {
@@ -15,11 +15,10 @@ type UserStruct struct {
 	RegisteredAt time.Time `json:"registered_at" db:"registered_at"`
 }
 
-type OrderStruct struct {
+type ProductStruct struct {
 	ID          int     `json:"id" db:"id"`
 	Name        string  `json:"name" db:"name"`
 	Quantity    int     `json:"quantity" db:"quantity"`
 	Price       float64 `json:"price" db:"price"`
 	Description string  `json:"description" db:"description"`
-	UserID      int     `json:"user_id" db:"user_id"`
 }

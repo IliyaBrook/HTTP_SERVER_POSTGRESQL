@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"HTTP_SERVER/handlers/orders"
+	"HTTP_SERVER/handlers/products"
 	"HTTP_SERVER/handlers/users"
 	"net/http"
 )
@@ -26,9 +26,9 @@ func HandleUsers(w http.ResponseWriter, r *http.Request) {
 func HandleOrders(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		orders.GetOrders(w, r)
+		products.GetProducts(w, r)
 	case http.MethodPost:
-		// todo
+		products.AddProduct(w, r)
 	case http.MethodDelete:
 		// todo
 	default:

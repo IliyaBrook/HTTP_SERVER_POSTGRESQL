@@ -15,7 +15,7 @@ func main() {
 		middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleUsers)),
 	)
 	// orders
-	http.HandleFunc("/orders",
+	http.HandleFunc("/products",
 		middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleOrders)),
 	)
 

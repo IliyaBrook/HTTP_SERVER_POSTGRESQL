@@ -5,7 +5,7 @@ Content-Type: application/json
 x-id: 1
 
 {
-  "name": "test user 1",
-  "email": "user20@test.com",
+  "name": "user100",
+  "email": "user100@test.com",
   "password": "123456"
 }

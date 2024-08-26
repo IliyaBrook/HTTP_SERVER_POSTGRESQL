@@ -18,7 +18,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 
 		err = data.DB.Select(&users, "SELECT id, name, email, password, registered_at FROM users")
 		if err != nil {
-			utils.HandleServerError(err, w, "Failed to load users", "log")
+			utils.ResponseErrorText(err, w, "Failed to load users")
 			return
 		}
 
@@ -43,12 +43,14 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
-		utils.HandleServerError(err, w, "Failed to marshal users data", "log")
+		utils.ResponseErrorText(err, w, "Failed to marshal users data")
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	_, writeUserErr := w.Write(resp)
-	utils.HandleServerError(writeUserErr, w, "Failed to write response", "log")
+	if writeUserErr != nil {
+		utils.ResponseErrorText(writeUserErr, w, "Failed to write response")
+	}
 }
