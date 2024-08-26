@@ -12,10 +12,11 @@ func ResponseErrorText(err error, resWriter http.ResponseWriter, message string)
 
 	resWriter.WriteHeader(http.StatusInternalServerError)
 	resWriter.Write([]byte(message))
-
+	fmt.Println(message)
 	if err != nil {
 		resWriter.Write([]byte(": "))
 		resWriter.Write([]byte(err.Error()))
+		fmt.Printf("Error: %s\n", err)
 	}
 }
 
