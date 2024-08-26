@@ -22,3 +22,8 @@ type ProductStruct struct {
 	Price       float64 `json:"price" db:"price"`
 	Description string  `json:"description" db:"description"`
 }
+
+type UserOrdersStruct struct {
+	UserId  int `json:"user_id" db:"user_id"`
+	OrderId int `json:"order_id" db:"order_id"`
+}
