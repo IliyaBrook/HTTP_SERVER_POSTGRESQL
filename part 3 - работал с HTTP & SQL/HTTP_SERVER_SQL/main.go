@@ -32,6 +32,9 @@ func main() {
 	mux.HandleFunc("/users",
 		middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleUsers)),
 	)
+	mux.HandleFunc("/userProducts",
+		middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleUserProducts)),
+	)
 	// orders
 	mux.HandleFunc("/products",
 		middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleProducts)),

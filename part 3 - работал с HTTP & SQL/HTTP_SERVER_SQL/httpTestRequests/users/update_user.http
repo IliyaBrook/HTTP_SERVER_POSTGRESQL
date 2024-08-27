@@ -1,0 +1,7 @@
+PATCH http://localhost:8080/users?id=23
+Content-Type: application/json
+x-id: 1
+
+{
+  "name": "user100"
+}
