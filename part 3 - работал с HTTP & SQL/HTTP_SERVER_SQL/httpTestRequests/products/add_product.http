@@ -3,9 +3,9 @@ x-id: 1
 Content-Type: application/json
 
 {
-	"name": "windows 11 licence",
+	"name": "B&O headphones",
 	"quantity": 1,
-	"price": 100,
-	"description": "windows licence key"
+	"price": 250,
+	"description": "headphone from b&o"
 }
 

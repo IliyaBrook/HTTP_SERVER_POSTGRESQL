@@ -10,33 +10,40 @@ import (
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
-	var requestData struct {
-		ID int `json:"id" db:"id"`
+	var userToDeleteStruct struct {
+		ID int `db:"id"`
 	}
 
-	marshalErr := json.NewDecoder(r.Body).Decode(&requestData)
-	if marshalErr != nil {
-		utils.ResponseErrorText(marshalErr, w, "Failed to marshal body")
-	}
+	var deletedUserId int
+	tx, err := data.DB.Beginx()
 
-	result, err := data.DB.NamedExec("DELETE FROM users WHERE ID=:id", &requestData)
+	err = json.NewDecoder(r.Body).Decode(&userToDeleteStruct)
 	if err != nil {
-		fmt.Println("Delete user failed", err)
+		utils.ResponseErrorText(err, w, "Failed to marshal body")
+		return
+	}
+	userToDelete := userToDeleteStruct.ID
+	fmt.Println("user To Delete", userToDelete)
+
+	err = tx.Get(&deletedUserId, "DELETE FROM users WHERE ID=$1 RETURNING id;", userToDelete)
+	if err != nil || deletedUserId != userToDelete {
+		_ = tx.Rollback()
+		utils.ResponseErrorText(err, w, "delete user failed")
 		return
 	}
 
-	rowsAffected, err := result.RowsAffected()
+	_, err = tx.Exec("DELETE FROM user_orders WHERE user_id=$1;", deletedUserId)
+
 	if err != nil {
-		utils.ResponseErrorText(err, w, "Failed to check rows affected")
+		_ = tx.Rollback()
+		utils.ResponseErrorText(err, w, "delete user order failed")
 		return
 	}
 
-	if rowsAffected == 0 {
-		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte("User not found"))
+	if err = tx.Commit(); err != nil {
+		utils.ResponseErrorText(err, w, "Failed to commit transaction")
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("User deleted successfully"))
+	utils.ResponseSuccessText(w, "User deleted successfully")
 }
