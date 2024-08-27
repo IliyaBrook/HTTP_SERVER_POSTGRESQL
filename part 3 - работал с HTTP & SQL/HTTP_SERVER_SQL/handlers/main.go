@@ -6,8 +6,6 @@ import (
 	"net/http"
 )
 
-// users
-
 func HandleUsers(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
@@ -21,16 +19,14 @@ func HandleUsers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-/// orders
-
-func HandleOrders(w http.ResponseWriter, r *http.Request) {
+func HandleProducts(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		products.GetProducts(w, r)
 	case http.MethodPost:
 		products.AddProduct(w, r)
 	case http.MethodDelete:
-		// todo
+		products.DeleteProduct(w, r)
 	default:
 		w.WriteHeader(http.StatusNotImplemented)
 	}

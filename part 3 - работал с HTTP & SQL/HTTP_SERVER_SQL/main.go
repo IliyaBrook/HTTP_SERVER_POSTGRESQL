@@ -34,7 +34,7 @@ func main() {
 	)
 	// orders
 	mux.HandleFunc("/products",
-		middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleOrders)),
+		middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleProducts)),
 	)
 
 	handler := corsHandler(mux)
