@@ -15,6 +15,7 @@ func AddProduct(w http.ResponseWriter, r *http.Request) {
 	var newProductData data.ProductStruct
 
 	err := json.NewDecoder(r.Body).Decode(&newProductData)
+	defer r.Body.Close()
 	if err != nil {
 		utils.ResponseErrorText(err, w, "failed to decode request body product")
 		return

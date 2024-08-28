@@ -20,6 +20,7 @@ func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = json.NewDecoder(r.Body).Decode(&deletedProduct)
+	defer r.Body.Close()
 	log.Println("product id from body:", deletedProduct.ID)
 	if err != nil || deletedProduct.ID == 0 {
 		utils.ResponseErrorText(err, w, "failed to get deleted product id")

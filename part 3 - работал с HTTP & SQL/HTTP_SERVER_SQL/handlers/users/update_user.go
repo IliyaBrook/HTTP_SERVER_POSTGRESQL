@@ -20,6 +20,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err := json.NewDecoder(r.Body).Decode(&updatedUserData)
+	defer r.Body.Close()
 	if err != nil {
 		utils.ResponseErrorText(err, w, "failed to decode request body")
 		return

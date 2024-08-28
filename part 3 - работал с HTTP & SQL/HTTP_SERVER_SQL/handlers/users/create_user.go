@@ -10,6 +10,7 @@ import (
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	var newUser data.UserStruct
 	err := json.NewDecoder(r.Body).Decode(&newUser)
+	defer r.Body.Close()
 	if err != nil {
 		utils.ResponseErrorText(err, w, "Failed to marshal orders data")
 	}

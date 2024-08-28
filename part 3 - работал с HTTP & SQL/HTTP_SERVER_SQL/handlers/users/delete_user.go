@@ -18,6 +18,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	tx, err := data.DB.Beginx()
 
 	err = json.NewDecoder(r.Body).Decode(&userToDeleteStruct)
+	defer r.Body.Close()
 	if err != nil {
 		utils.ResponseErrorText(err, w, "Failed to marshal body")
 		return
