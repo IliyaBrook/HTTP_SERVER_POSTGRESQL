@@ -5,8 +5,26 @@ import (
 	"strings"
 )
 
-// BuildSQLQuery creates a dynamic SQL query for any operation with the provided table name, data map, and condition.
-func buildSQLDynamic(queryType, tableName string, data map[string]interface{}, condition string, conditionArgs ...interface{}) (string, []interface{}, error) {
+// BuildSQLDynamic builds a dynamic SQL query for different types of operations (INSERT, UPDATE, DELETE, SELECT).
+//
+// Parameters:
+//   - queryType: Type of the SQL query ("INSERT", "UPDATE", "DELETE", "SELECT").
+//   - tableName: Name of the table to perform the operation on.
+//   - data: A map where keys are column names and values are the values to insert or update.
+//     For SELECT queries, keys are the column names to select (if the map is empty, it selects all columns).
+//   - condition: A string representing the WHERE clause (e.g., "id = $1").
+//   - conditionArgs: Values for placeholders in the WHERE clause.
+//
+// Returns:
+// - A string containing the constructed SQL query.
+// - A slice of interface{} containing the arguments to pass to the query.
+// - An error if the queryType is not supported or if data is empty for non-DELETE/SELECT queries.
+//
+// Example Usage:
+// 1:
+// query, args, err := utils.BuildSQLDynamic("UPDATE", "users", map[string]interface{}{"name": "John", "age": 30}, "id = $1", 1)
+// 2: query, args, err := utils.BuildSQLDynamic("UPDATE", "users", updatedUserData, "id = $1", updateUserId)
+func BuildSQLDynamic(queryType, tableName string, data map[string]interface{}, condition string, conditionArgs ...interface{}) (string, []interface{}, error) {
 	if len(data) == 0 && queryType != "DELETE" && queryType != "SELECT" {
 		return "", nil, fmt.Errorf("no data provided for %s operation", queryType)
 	}
