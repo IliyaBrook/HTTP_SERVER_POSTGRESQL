@@ -51,6 +51,8 @@ func BuildSQLDynamic(queryType, tableName string, data map[string]interface{}, c
 			args = append(args, value)
 			argID++
 		}
+
+		condition = reindexConditionParams(condition, argID)
 		query = fmt.Sprintf("UPDATE %s SET %s WHERE %s", tableName, strings.Join(queryParts, ", "), condition)
 
 	case "DELETE":
@@ -73,4 +75,20 @@ func BuildSQLDynamic(queryType, tableName string, data map[string]interface{}, c
 	args = append(args, conditionArgs...)
 
 	return query, args, nil
+}
+
+func reindexConditionParams(condition string, startIdx int) string {
+	var newConditionParts []string
+	parts := strings.Split(condition, " ")
+
+	for _, part := range parts {
+		if strings.HasPrefix(part, "$") {
+			newConditionParts = append(newConditionParts, fmt.Sprintf("$%d", startIdx))
+			startIdx++
+		} else {
+			newConditionParts = append(newConditionParts, part)
+		}
+	}
+
+	return strings.Join(newConditionParts, " ")
 }
