@@ -13,6 +13,7 @@ import (
 //   - data: A map where keys are column names and values are the values to insert or update.
 //     For SELECT queries, keys are the column names to select (if the map is empty, it selects all columns).
 //   - condition: A string representing the WHERE clause (e.g., "id = $1").
+//     **Important**: Ensure there are spaces around operators in the condition string (e.g., use "id = $1" instead of "id=$1").
 //   - conditionArgs: Values for placeholders in the WHERE clause.
 //
 // Returns:
@@ -23,7 +24,13 @@ import (
 // Example Usage:
 // 1:
 // query, args, err := utils.BuildSQLDynamic("UPDATE", "users", map[string]interface{}{"name": "John", "age": 30}, "id = $1", 1)
-// 2: query, args, err := utils.BuildSQLDynamic("UPDATE", "users", updatedUserData, "id = $1", updateUserId)
+// 2:
+// query, args, err := utils.BuildSQLDynamic("UPDATE", "users", updatedUserData, "id = $1", updateUserId)
+//
+//	if err != nil {
+//		utils.ResponseErrorText(err, w, "failed to build update query")
+//		return
+//	}
 func BuildSQLDynamic(queryType, tableName string, data map[string]interface{}, condition string, conditionArgs ...interface{}) (string, []interface{}, error) {
 	if len(data) == 0 && queryType != "DELETE" && queryType != "SELECT" {
 		return "", nil, fmt.Errorf("no data provided for %s operation", queryType)

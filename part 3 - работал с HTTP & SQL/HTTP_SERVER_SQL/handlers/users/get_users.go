@@ -3,7 +3,9 @@ package users
 import (
 	"HTTP_SERVER/data"
 	"HTTP_SERVER/utils"
+	"database/sql"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
 )
@@ -18,6 +20,10 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 
 		err = data.DB.Select(&users, "SELECT id, name, email, password, registered_at FROM users")
 		if err != nil {
+			if errors.Is(err, sql.ErrNoRows) {
+				utils.ResponseErrorText(err, w, "No rows")
+				return
+			}
 			utils.ResponseErrorText(err, w, "Failed to load users")
 			return
 		}

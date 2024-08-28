@@ -4,7 +4,6 @@ import (
 	"HTTP_SERVER/data"
 	"HTTP_SERVER/utils"
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
@@ -16,6 +15,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	var deletedUserId int
 	tx, err := data.DB.Beginx()
+	defer tx.Rollback()
 
 	err = json.NewDecoder(r.Body).Decode(&userToDeleteStruct)
 	defer r.Body.Close()
@@ -24,11 +24,9 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	userToDelete := userToDeleteStruct.ID
-	fmt.Println("user To Delete", userToDelete)
 
 	err = tx.Get(&deletedUserId, "DELETE FROM users WHERE ID=$1 RETURNING id;", userToDelete)
 	if err != nil || deletedUserId != userToDelete {
-		_ = tx.Rollback()
 		utils.ResponseErrorText(err, w, "delete user failed")
 		return
 	}
@@ -36,7 +34,6 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	_, err = tx.Exec("DELETE FROM user_orders WHERE user_id=$1;", deletedUserId)
 
 	if err != nil {
-		_ = tx.Rollback()
 		utils.ResponseErrorText(err, w, "delete user order failed")
 		return
 	}

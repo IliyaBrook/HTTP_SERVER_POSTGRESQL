@@ -1,0 +1,7 @@
+PATCH http://localhost:8080/products?id=1
+x-id: 1
+Content-Type: application/json
+
+{
+  "name": "iPhone 13"
+}

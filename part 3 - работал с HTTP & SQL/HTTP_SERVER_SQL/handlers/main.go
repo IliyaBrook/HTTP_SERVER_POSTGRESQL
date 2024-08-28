@@ -33,6 +33,8 @@ func HandleProducts(w http.ResponseWriter, r *http.Request) {
 		products.GetProducts(w, r)
 	case http.MethodPost:
 		products.AddProduct(w, r)
+	case http.MethodPatch:
+		products.UpdateProduct(w, r)
 	case http.MethodDelete:
 		products.DeleteProduct(w, r)
 	default:

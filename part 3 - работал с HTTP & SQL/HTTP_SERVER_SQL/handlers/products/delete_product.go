@@ -14,6 +14,8 @@ func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tx, err := data.DB.Beginx()
+	defer tx.Rollback()
+
 	if err != nil {
 		utils.ResponseErrorText(err, w, "failed to begin transaction")
 		return
@@ -29,14 +31,12 @@ func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 
 	_, err = tx.NamedExec("DELETE FROM products WHERE id=:id", &deletedProduct)
 	if err != nil {
-		_ = tx.Rollback()
 		utils.ResponseErrorText(err, w, "failed to delete product")
 		return
 	}
 
 	_, err = tx.Exec("DELETE FROM user_orders WHERE product_id=$1", &deletedProduct.ID)
 	if err != nil {
-		_ = tx.Rollback()
 		utils.ResponseErrorText(err, w, "failed to delete product")
 		return
 	}

@@ -14,7 +14,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		utils.ResponseErrorText(err, w, "Failed to marshal orders data")
 	}
-	_, err = data.DB.NamedQuery(
+
+	rows, errInsert := data.DB.NamedQuery(
 		"INSERT INTO users (name, email, password) VALUES (:name, :email, :password) RETURNING id",
 		map[string]interface{}{
 			"name":     newUser.Name,
@@ -22,8 +23,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 			"password": newUser.Password,
 		},
 	)
-	if err != nil {
-		utils.ResponseErrorText(err, w, "Failed to save database")
+	defer rows.Close()
+
+	if errInsert != nil {
+		utils.ResponseErrorText(err, w, "Failed to create user")
 		return
 	}
 

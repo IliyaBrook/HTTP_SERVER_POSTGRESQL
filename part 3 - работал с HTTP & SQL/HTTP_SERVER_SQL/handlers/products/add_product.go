@@ -21,8 +21,9 @@ func AddProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tx, err := data.DB.Beginx()
-	if err != nil {
+	tx, errTxBegin := data.DB.Beginx()
+	defer tx.Rollback()
+	if errTxBegin != nil {
 		utils.ResponseErrorText(err, w, "failed to begin transaction")
 		return
 	}
@@ -34,24 +35,22 @@ func AddProduct(w http.ResponseWriter, r *http.Request) {
 	).Scan(&newProdId)
 
 	if err != nil {
-		_ = tx.Rollback()
 		utils.ResponseErrorText(err, w, "error to add product")
 		return
 	}
 
 	if newProdId == 0 {
-		_ = tx.Rollback()
 		utils.ResponseErrorText(fmt.Errorf("no ID returned"), w, "error to add product")
 		return
 	}
 
-	_, err = tx.Queryx(
+	rows, errAddProd := tx.Queryx(
 		`INSERT INTO user_orders (user_id, product_id) VALUES ($1, $2)`,
 		userId, newProdId,
 	)
+	defer rows.Close()
 
-	if err != nil {
-		_ = tx.Rollback()
+	if errAddProd != nil {
 		utils.ResponseErrorText(err, w, "error to add product")
 		return
 	}

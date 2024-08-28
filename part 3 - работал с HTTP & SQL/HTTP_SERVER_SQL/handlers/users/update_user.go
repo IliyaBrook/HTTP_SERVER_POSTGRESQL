@@ -5,7 +5,6 @@ import (
 	"HTTP_SERVER/utils"
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 )
 
@@ -34,8 +33,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	_, err = data.DB.Exec(query, args...)
 	if err != nil {
-		log.Printf("Failed to update user: %v", err)
-		http.Error(w, "Failed to update user", http.StatusInternalServerError)
+		utils.ResponseErrorText(err, w, "Failed to update user")
 		return
 	}
 
