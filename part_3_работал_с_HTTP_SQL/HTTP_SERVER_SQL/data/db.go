@@ -1,8 +1,6 @@
 package data
 
 import (
-	"HTTP_SERVER/utils"
-	"encoding/json"
 	"fmt"
 	"github.com/jmoiron/sqlx"
 	_ "github.com/jmoiron/sqlx"
@@ -11,8 +9,6 @@ import (
 	"log"
 	"os"
 )
-
-var filePath = utils.ResolvePath("data/database.json")
 
 var DB *sqlx.DB
 
@@ -33,36 +29,6 @@ func InitDataBase() *sqlx.DB {
 	}
 	fmt.Println("Connected to database")
 	return DB
-}
-
-func (d *DbStruct) ReadDatabase() error {
-
-	file, err := os.ReadFile(filePath)
-
-	if err != nil {
-		fmt.Println("Error reading file:", err)
-		return err
-	}
-
-	if err := json.Unmarshal(file, d); err != nil {
-		fmt.Println("Error unmarshalling JSON:", err)
-		return err
-	}
-
-	return nil
-}
-
-func (d *DbStruct) SaveDatabase() error {
-	file, err := json.MarshalIndent(d, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	if err := os.WriteFile(filePath, file, 0644); err != nil {
-		return err
-	}
-
-	return nil
 }
 
 var DbInst = &DbStruct{}
