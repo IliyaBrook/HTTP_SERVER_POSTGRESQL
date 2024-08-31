@@ -18,19 +18,14 @@ var MainHtml = fmt.Sprintf(
 	</head>
 <body>
 <form id='form'>
-	<div class='searchFormWrapper'>
-	    <div class='searchForm'>
-    	    	<div class='search-input-wrapper'>
-    	    	    <label for='data'/>
-            		<input type='text' name='data' id='data' placeholder='Enter something'>
-    	    	<div/>
-        		<div class='search-button-wrapper'>
-        		    <button type='button' onclick='submitForm()'>Submit</button>
-        		</div>
-    	</div>
-		<div class='content-output'>
-				
-		</div>
+	<div class='search-form-wrapper'>
+		<input type='text' name='search-input' placeholder='Search by bread' id='search-input'>
+		<button type='button' onclick='submitForm()'>
+			Submit
+		</button>
+	</div>
+	<div class='search-output'>
+		
 	</div>
 </form>
 	%s
