@@ -33,7 +33,6 @@ func main() {
 		ExposedHeaders:   []string{"Set-Cookie"},
 		AllowCredentials: true,
 	}).Handler
-	log.Println("Starting server on port " + sharable.PORT)
 
 	routes.RouteFunctions(mux)
 

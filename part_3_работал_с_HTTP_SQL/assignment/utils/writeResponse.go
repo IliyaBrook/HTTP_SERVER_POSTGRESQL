@@ -19,9 +19,3 @@ func ResponseErrorText(err error, resWriter http.ResponseWriter, message string)
 		fmt.Printf("Error: %s\n", err)
 	}
 }
-
-func ResponseSuccessText(resWriter http.ResponseWriter, message string) {
-	resWriter.WriteHeader(http.StatusOK)
-	resWriter.Write([]byte(message))
-	fmt.Printf("Success: %s\n", message)
-}

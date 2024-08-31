@@ -7,4 +7,5 @@ import (
 func RouteFunctions(mux *http.ServeMux) {
 	ClientRoot(mux)
 	GetBreeds(mux)
+	GetDogs(mux)
 }
