@@ -35,7 +35,8 @@ type DogResponse struct {
 	History     string `json:"history,omitempty"`
 }
 
-var DogBreeds *[]DogResponse
+var Dogs = &[]DogResponse{}
+var DogBreeds = &[]string{}
 
 type DogImageResponse struct {
 	Breeds []struct {

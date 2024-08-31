@@ -3,23 +3,16 @@ package main
 import (
 	"assignment/routes"
 	"assignment/sharable"
-	"fmt"
-	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 	"log"
 	"net/http"
-	"os"
 )
 
 func main() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		fmt.Println("Error loading .env file")
-		log.Fatal(err)
-	}
-
+	sharable.LoadEnvironmentVariables()
 	mux := http.NewServeMux()
-	port := os.Getenv("PORT")
+
+	port := sharable.PORT
 
 	allowedOrigins := []string{
 		sharable.AllowedOrigins1,
