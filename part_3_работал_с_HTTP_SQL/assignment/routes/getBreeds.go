@@ -14,8 +14,8 @@ func GetBreeds(mux *http.ServeMux) {
 	mux.HandleFunc("/getBreeds", func(w http.ResponseWriter, r *http.Request) {
 		if len(*sharable.Dogs) == 0 {
 			if r.Method == http.MethodGet {
+				//
 				url := sharable.ApiUrl
-				log.Println("url: ", url)
 				client, err := http.DefaultClient.Get(url + "/breeds")
 				if err != nil {
 					utils.ResponseErrorText(err, w, "Error while getting breeds")
