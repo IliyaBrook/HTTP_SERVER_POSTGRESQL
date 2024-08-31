@@ -72,6 +72,7 @@ button:active {
 }
 
 .search-output{
+	position: relative;
 	width: 50vw;
 	background-color: #ffffff;
 	min-height: 80vh;	
@@ -114,6 +115,9 @@ button:active {
 
 .spinner {
     display: none;
+	position: absolute;
+	left: 45%;
+	top: 45%;
     margin: 20px auto;
     border: 8px solid #f3f3f3; 
     border-top: 8px solid #56c6ca; 

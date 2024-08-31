@@ -12,7 +12,7 @@ var (
 	PORT            = os.Getenv("PORT")
 	AllowedOrigins1 = os.Getenv("ALLOWED_ORIGINS_1")
 	AllowedOrigins2 = os.Getenv("ALLOWED_ORIGINS_2")
-	ApiUrl          = os.Getenv("API_URL")
+	ApiUrl          = "https://api.thedogapi.com/v1"
 )
 
 func LoadEnvironmentVariables() {
@@ -25,5 +25,4 @@ func LoadEnvironmentVariables() {
 	PORT = os.Getenv("PORT")
 	AllowedOrigins1 = os.Getenv("ALLOWED_ORIGINS_1")
 	AllowedOrigins2 = os.Getenv("ALLOWED_ORIGINS_2")
-	ApiUrl = os.Getenv("API_URL")
 }

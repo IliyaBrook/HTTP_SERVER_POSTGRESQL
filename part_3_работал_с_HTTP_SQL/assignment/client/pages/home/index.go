@@ -33,8 +33,10 @@ var MainHtml = fmt.Sprintf(
 				Clear
 			</button>
 		</div>
-		<div id='loading-spinner' class='spinner'></div>
-		<div class='search-output'></div>
+		
+		<div class='search-output'>
+			<div id='loading-spinner' class='spinner'></div>
+		</div>
 	</form>
 	%s
 </body>
