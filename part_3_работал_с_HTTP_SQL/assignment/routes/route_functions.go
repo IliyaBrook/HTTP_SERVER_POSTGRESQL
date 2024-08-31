@@ -15,4 +15,12 @@ func RouteFunctions(mux *http.ServeMux) {
 			w.WriteHeader(http.StatusMethodNotAllowed)
 		}
 	})
+	mux.HandleFunc("/getBreeds", func(w http.ResponseWriter, r *http.Request) {
+
+		if r.Method == http.MethodGet {
+
+		} else {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+		}
+	})
 }

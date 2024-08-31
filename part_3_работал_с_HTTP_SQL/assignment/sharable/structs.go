@@ -35,6 +35,8 @@ type DogResponse struct {
 	History     string `json:"history,omitempty"`
 }
 
+var DogBreeds *[]DogResponse
+
 type DogImageResponse struct {
 	Breeds []struct {
 		Weight struct {

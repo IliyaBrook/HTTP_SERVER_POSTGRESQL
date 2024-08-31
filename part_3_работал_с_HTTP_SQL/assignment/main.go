@@ -2,6 +2,7 @@ package main
 
 import (
 	"assignment/routes"
+	"assignment/sharable"
 	"fmt"
 	"github.com/joho/godotenv"
 	"github.com/rs/cors"
@@ -21,8 +22,8 @@ func main() {
 	port := os.Getenv("PORT")
 
 	allowedOrigins := []string{
-		os.Getenv("ALLOWED_ORIGINS_1"),
-		os.Getenv("ALLOWED_ORIGINS_2"),
+		sharable.AllowedOrigins1,
+		sharable.AllowedOrigins2,
 	}
 
 	corsHandler := cors.New(cors.Options{
@@ -39,7 +40,7 @@ func main() {
 		ExposedHeaders:   []string{"Set-Cookie"},
 		AllowCredentials: true,
 	}).Handler
-	log.Println("Starting server on port " + os.Getenv("PORT"))
+	log.Println("Starting server on port " + sharable.PORT)
 
 	routes.RouteFunctions(mux)
 

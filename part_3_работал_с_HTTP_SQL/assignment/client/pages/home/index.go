@@ -19,10 +19,15 @@ var MainHtml = fmt.Sprintf(
 <body>
 <form id='form'>
 	<div class='search-form-wrapper'>
-		<input type='text' name='search-input' placeholder='Search by bread' id='search-input'>
+		<input type='text' name='search-input' placeholder='Search by breed' id='search-input'>
 		<button type='button' onclick='submitForm()'>
 			Submit
 		</button>
+	</div>
+	<div class='search-select-wrapper'>
+		<select id='search-select'>
+			<option value='' disabled selected>Select dog breed</option>
+		</select>
 	</div>
 	<div class='search-output'>
 		
