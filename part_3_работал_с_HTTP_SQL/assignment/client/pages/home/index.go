@@ -30,6 +30,9 @@ var MainHtml = fmt.Sprintf(
 			<button type='button' id='submit-button'>
 				Submit
 			</button>
+			<button type='button' id='clear-button'>
+				Clear
+			</button>
 		</div>
 		<div class='search-output'>
 			

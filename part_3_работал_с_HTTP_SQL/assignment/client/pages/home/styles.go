@@ -63,6 +63,14 @@ button:active {
     background-color: #349396;
 }
 
+#clear-button{
+	margin-left: 10px;
+	background-color: #f05050;
+}
+#clear-button:hover{
+	background-color: #e03d3d;
+}
+
 .search-output{
 	width: 50vw;
 	background-color: #ffffff;
