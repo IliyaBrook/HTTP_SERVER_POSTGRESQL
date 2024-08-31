@@ -112,4 +112,19 @@ button:active {
     margin: 5px 0;
 }
 
+.spinner {
+    display: none;
+    margin: 20px auto;
+    border: 8px solid #f3f3f3; 
+    border-top: 8px solid #56c6ca; 
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
 `

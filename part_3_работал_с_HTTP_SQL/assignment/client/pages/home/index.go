@@ -2,7 +2,6 @@ package pages
 
 import "fmt"
 
-//goland:noinspection JSUnresolvedReference
 var MainHtml = fmt.Sprintf(
 	//language=html
 	`
@@ -34,9 +33,8 @@ var MainHtml = fmt.Sprintf(
 				Clear
 			</button>
 		</div>
-		<div class='search-output'>
-			
-		</div>
+		<div id='loading-spinner' class='spinner'></div>
+		<div class='search-output'></div>
 	</form>
 	%s
 </body>
