@@ -7,8 +7,10 @@ import (
 )
 
 var (
-	DbUser string
-	DbPass string
+	DbUser         string
+	DbPass         string
+	Mode           string
+	TrustedProxies string
 )
 
 func LoadEnvs() {
@@ -18,4 +20,6 @@ func LoadEnvs() {
 	}
 	DbUser = os.Getenv("DB_USER")
 	DbPass = os.Getenv("DB_PASSWORD")
+	Mode = os.Getenv("MODE")
+	TrustedProxies = os.Getenv("TRUSTED_PROXIES")
 }
