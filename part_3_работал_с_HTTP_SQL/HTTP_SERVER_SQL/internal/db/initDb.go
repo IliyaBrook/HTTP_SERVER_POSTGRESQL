@@ -7,7 +7,7 @@ import (
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"log"
-	"os"
+	"main/internal/env"
 )
 
 var DB *sqlx.DB
@@ -19,7 +19,7 @@ func InitDataBase() *sqlx.DB {
 		log.Fatal("Error loading .env file")
 	}
 	// env from .env
-	DB, err = sqlx.Open("postgres", "host=localhost port=5432 user="+os.Getenv("DB_USER")+" password="+os.Getenv("DB_PASSWORD")+" dbname=postgres sslmode=disable search_path=golang_course")
+	DB, err = sqlx.Open("postgres", "host=localhost port=5432 user="+env.DbUser+" password="+env.DbPass+" dbname=postgres sslmode=disable search_path=golang_course")
 	if err != nil {
 		log.Fatal(err)
 	}
