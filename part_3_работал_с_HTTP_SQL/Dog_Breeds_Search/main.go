@@ -1,16 +1,28 @@
 package main
 
 import (
-	"assignment/routes"
-	"assignment/sharable"
+	"dog_breeds_search/docs"
+	"dog_breeds_search/routes"
+	"dog_breeds_search/sharable"
 	"github.com/rs/cors"
+	_ "github.com/swaggo/files"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
 )
 
+// @title Dog Breeds API
+// @version 1.0
+// @description Dog Breeds API project from golang ninja course
+// @BasePath
+// @contact.name   Iliya Brook
+// @contact.email  iliyabrook1987@gmail.com
 func main() {
+	docs.SwaggerInfo.Host = "localhost:8080"
+	docs.SwaggerInfo.BasePath = "/"
 	sharable.LoadEnvironmentVariables()
 	mux := http.NewServeMux()
+	mux.Handle("/swagger/", httpSwagger.WrapHandler)
 
 	port := sharable.PORT
 

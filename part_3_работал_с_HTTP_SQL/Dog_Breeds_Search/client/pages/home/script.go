@@ -51,6 +51,7 @@ var MainScripts = fmt.Sprintf(
 		
 		function clearOutput() {
 			searchOutput.innerHTML = '';
+            searchInput.value = ''; 
 		}
 		
 		function onChange(event) {
@@ -63,7 +64,6 @@ var MainScripts = fmt.Sprintf(
 		}
 		
 		function submitForm() {
-			clearOutput();
 			showSpinner();
 			fetch("/getDogs?breed=" + searchInput.value)
 				.then(response => {

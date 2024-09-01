@@ -63,3 +63,8 @@ type DogImageResponse struct {
 	Width  int    `json:"width"`
 	Height int    `json:"height"`
 }
+
+type ErrorResponse struct {
+	Message string `json:"message"`
+	Error   string `json:"error,omitempty"`
+}

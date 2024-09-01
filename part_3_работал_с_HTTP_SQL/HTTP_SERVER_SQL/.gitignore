@@ -1,0 +1,45 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary, build products
+*.test
+*.out
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.cov
+
+# Backup files (if editing source in Vim)
+*.swp
+*.swo
+
+# Files in the node_modules directory can vary
+node_modules/
+
+# IntelliJ IDEA specific files
+.idea/
+*.iml
+out/
+
+# Go workspace file (if you use the go get command)
+go.work
+go.work.sum
+
+# Go modules
+vendor/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# Compiled Object files
+*.o
+*.a
+*.s
+
+# Generated files
+*.gen.go

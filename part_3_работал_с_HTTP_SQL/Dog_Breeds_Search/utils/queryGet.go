@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"assignment/sharable"
+	"dog_breeds_search/sharable"
 	"encoding/json"
 	"io"
 	"net/http"

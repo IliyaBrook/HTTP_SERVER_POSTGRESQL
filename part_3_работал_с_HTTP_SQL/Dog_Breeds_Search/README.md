@@ -20,8 +20,8 @@ Before running the application, ensure you have the following:
 
 1. Clone the repository:
     ```
-    git clone <repository-url>
-    cd <repository-directory>
+    git clone dogBreedsSearch
+    cd dogBreedsSearch
     ```
 
 2. Create a `.env` file in the root directory with the following content:
