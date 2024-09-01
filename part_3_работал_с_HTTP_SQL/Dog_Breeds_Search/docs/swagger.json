@@ -1,0 +1,188 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Dog Breeds API project from golang ninja course",
+        "title": "Dog Breeds API",
+        "contact": {
+            "name": "Iliya Brook",
+            "email": "iliyabrook1987@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "/getBreeds": {
+            "get": {
+                "description": "Returns a list of all dog breeds.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "breeds"
+                ],
+                "summary": "Get all breeds",
+                "responses": {
+                    "200": {
+                        "description": "List of all dog breeds",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/sharable.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/getDogs": {
+            "get": {
+                "description": "Returns a list of dogs by breed name. If the breed name is partially matched, similar results are returned.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dogs"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "Airedale Terrier",
+                        "description": "Breed name",
+                        "name": "breed",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "default": "sharable.ApiKey",
+                        "description": "API key required to access this endpoint",
+                        "name": "x-api-key",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of matching dogs",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/sharable.DogResponse"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Breed name is required",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "sharable.DogResponse": {
+            "type": "object",
+            "properties": {
+                "bred_for": {
+                    "type": "string"
+                },
+                "breed_group": {
+                    "type": "string"
+                },
+                "country_code": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "height": {
+                    "type": "object",
+                    "properties": {
+                        "imperial": {
+                            "type": "string"
+                        },
+                        "metric": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "history": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "image": {
+                    "type": "object",
+                    "properties": {
+                        "height": {
+                            "type": "integer"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "url": {
+                            "type": "string"
+                        },
+                        "width": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "life_span": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "origin": {
+                    "type": "string"
+                },
+                "reference_image_id": {
+                    "type": "string"
+                },
+                "temperament": {
+                    "type": "string"
+                },
+                "weight": {
+                    "type": "object",
+                    "properties": {
+                        "imperial": {
+                            "type": "string"
+                        },
+                        "metric": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "sharable.ErrorResponse": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
