@@ -34,8 +34,8 @@ vendor/
 *.log
 
 # Environment variables
-.env
-
+*.env
+.env*
 # Compiled Object files
 *.o
 *.a

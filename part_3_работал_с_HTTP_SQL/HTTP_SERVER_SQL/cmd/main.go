@@ -3,27 +3,26 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"log"
+	"main/config"
 	"main/internal/cors"
 	"main/internal/db"
-	"main/internal/env"
 	"main/internal/routes"
+	"main/pkg"
 	"strings"
 )
 
 func main() {
-	// load environment variables from .env
-	env.LoadEnvs()
-	if env.Mode == "prod" {
+	pkg.LoadEnvs()
+	if config.CfgApp.Mode == "prod" {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	var trustedProxyList []string
-	// init postgres sql db
 	database := db.InitDataBase()
 	defer database.Close()
 	r := gin.Default()
 	// set trusted proxies from TRUSTED_PROXIES env
-	if env.TrustedProxies != "" {
-		trustedProxyList = strings.Split(env.TrustedProxies, ",")
+	if config.CfgApp.TrustedProxies != "" {
+		trustedProxyList = strings.Split(config.CfgApp.TrustedProxies, ",")
 		err := r.SetTrustedProxies(trustedProxyList)
 		if err != nil {
 			log.Fatalf("Failed to set trusted proxies: %v", err)

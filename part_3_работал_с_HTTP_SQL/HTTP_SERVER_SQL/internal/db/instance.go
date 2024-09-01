@@ -1,3 +1,5 @@
 package db
 
-var DatabaseInst = &DatabaseStruct{}
+import "github.com/jmoiron/sqlx"
+
+var DB *sqlx.DB
