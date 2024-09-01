@@ -1,4 +1,4 @@
-package utils
+package pkg
 
 import (
 	"fmt"
@@ -23,12 +23,12 @@ import (
 //
 // Example Usage:
 // 1:
-// query, args, err := utils.BuildSQLDynamic("UPDATE", "users", map[string]interface{}{"name": "John", "age": 30}, "id = $1", 1)
+// query, args, err := pkg.BuildSQLDynamic("UPDATE", "users", map[string]interface{}{"name": "John", "age": 30}, "id = $1", 1)
 // 2:
-// query, args, err := utils.BuildSQLDynamic("UPDATE", "users", updatedUserData, "id = $1", updateUserId)
+// query, args, err := pkg.BuildSQLDynamic("UPDATE", "users", updatedUserData, "id = $1", updateUserId)
 //
 //	if err != nil {
-//		utils.ResponseErrorText(err, w, "failed to build update query")
+//		pkg.ResponseErrorText(err, w, "failed to build update query")
 //		return
 //	}
 func BuildSQLDynamic(queryType, tableName string, data map[string]interface{}, condition string, conditionArgs ...interface{}) (string, []interface{}, error) {

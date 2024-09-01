@@ -1,10 +1,10 @@
 package products
 
 import (
-	"HTTP_SERVER/data"
-	"HTTP_SERVER/utils"
 	"encoding/json"
 	"fmt"
+	"main/data"
+	"main/pkg"
 	"net/http"
 )
 
@@ -17,14 +17,14 @@ func AddProduct(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&newProductData)
 	defer r.Body.Close()
 	if err != nil {
-		utils.ResponseErrorText(err, w, "failed to decode request body product")
+		pkg.ResponseErrorText(err, w, "failed to decode request body product")
 		return
 	}
 
 	tx, errTxBegin := data.DB.Beginx()
 	defer tx.Rollback()
 	if errTxBegin != nil {
-		utils.ResponseErrorText(err, w, "failed to begin transaction")
+		pkg.ResponseErrorText(err, w, "failed to begin transaction")
 		return
 	}
 
@@ -35,12 +35,12 @@ func AddProduct(w http.ResponseWriter, r *http.Request) {
 	).Scan(&newProdId)
 
 	if err != nil {
-		utils.ResponseErrorText(err, w, "error to add product")
+		pkg.ResponseErrorText(err, w, "error to add product")
 		return
 	}
 
 	if newProdId == 0 {
-		utils.ResponseErrorText(fmt.Errorf("no ID returned"), w, "error to add product")
+		pkg.ResponseErrorText(fmt.Errorf("no ID returned"), w, "error to add product")
 		return
 	}
 
@@ -51,14 +51,14 @@ func AddProduct(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	if errAddProd != nil {
-		utils.ResponseErrorText(err, w, "error to add product")
+		pkg.ResponseErrorText(err, w, "error to add product")
 		return
 	}
 
 	if err = tx.Commit(); err != nil {
-		utils.ResponseErrorText(err, w, "failed to commit transaction")
+		pkg.ResponseErrorText(err, w, "failed to commit transaction")
 		return
 	}
 
-	utils.ResponseSuccessText(w, "Product added successfully")
+	pkg.ResponseSuccessText(w, "Product added successfully")
 }

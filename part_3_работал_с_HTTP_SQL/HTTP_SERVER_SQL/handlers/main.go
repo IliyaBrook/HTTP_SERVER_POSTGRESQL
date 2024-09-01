@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"HTTP_SERVER/handlers/products"
-	"HTTP_SERVER/handlers/users"
+	"main/handlers/products"
+	"main/handlers/users"
 	"net/http"
 )
 

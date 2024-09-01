@@ -1,11 +1,11 @@
 package users
 
 import (
-	"HTTP_SERVER/data"
-	"HTTP_SERVER/utils"
 	"database/sql"
 	"encoding/json"
 	"errors"
+	"main/data"
+	"main/pkg"
 	"net/http"
 	"strconv"
 )
@@ -21,10 +21,10 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 		err = data.DB.Select(&users, "SELECT id, name, email, password, registered_at FROM users")
 		if err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
-				utils.ResponseErrorText(err, w, "No rows")
+				pkg.ResponseErrorText(err, w, "No rows")
 				return
 			}
-			utils.ResponseErrorText(err, w, "Failed to load users")
+			pkg.ResponseErrorText(err, w, "Failed to load users")
 			return
 		}
 
@@ -49,7 +49,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
-		utils.ResponseErrorText(err, w, "Failed to marshal users data")
+		pkg.ResponseErrorText(err, w, "Failed to marshal users data")
 		return
 	}
 
@@ -57,6 +57,6 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	_, writeUserErr := w.Write(resp)
 	if writeUserErr != nil {
-		utils.ResponseErrorText(writeUserErr, w, "Failed to write response")
+		pkg.ResponseErrorText(writeUserErr, w, "Failed to write response")
 	}
 }

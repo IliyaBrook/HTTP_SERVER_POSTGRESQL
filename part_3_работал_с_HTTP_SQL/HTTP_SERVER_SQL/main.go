@@ -1,11 +1,11 @@
 package main
 
 import (
-	"HTTP_SERVER/data"
-	"HTTP_SERVER/handlers"
-	"HTTP_SERVER/middlewares"
 	"github.com/rs/cors"
 	"log"
+	"main/data"
+	"main/handlers"
+	"main/middlewares"
 	"net/http"
 )
 

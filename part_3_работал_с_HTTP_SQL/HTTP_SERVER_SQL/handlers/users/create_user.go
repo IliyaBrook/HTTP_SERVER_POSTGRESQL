@@ -1,9 +1,9 @@
 package users
 
 import (
-	"HTTP_SERVER/data"
-	"HTTP_SERVER/utils"
 	"encoding/json"
+	"main/data"
+	"main/pkg"
 	"net/http"
 )
 
@@ -12,7 +12,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&newUser)
 	defer r.Body.Close()
 	if err != nil {
-		utils.ResponseErrorText(err, w, "Failed to marshal orders data")
+		pkg.ResponseErrorText(err, w, "Failed to marshal orders data")
 	}
 
 	rows, errInsert := data.DB.NamedQuery(
@@ -26,7 +26,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	if errInsert != nil {
-		utils.ResponseErrorText(err, w, "Failed to create user")
+		pkg.ResponseErrorText(err, w, "Failed to create user")
 		return
 	}
 

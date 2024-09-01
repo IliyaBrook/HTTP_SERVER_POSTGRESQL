@@ -1,10 +1,10 @@
 package users
 
 import (
-	"HTTP_SERVER/data"
-	"HTTP_SERVER/utils"
 	"encoding/json"
 	"errors"
+	"main/data"
+	"main/pkg"
 	"net/http"
 )
 
@@ -18,7 +18,7 @@ func GetUserProducts(w http.ResponseWriter, r *http.Request) {
 	if userId = r.URL.Query().Get("id"); userId == "" {
 		if userId = r.Header.Get("x-id"); userId == "" {
 			err = errors.New("failed to get id from body")
-			utils.ResponseErrorText(err, w, "failed to get id from body")
+			pkg.ResponseErrorText(err, w, "failed to get id from body")
 			return
 		}
 	}
@@ -34,7 +34,7 @@ func GetUserProducts(w http.ResponseWriter, r *http.Request) {
 	)
 
 	if err != nil || len(userOrders) == 0 {
-		utils.ResponseErrorText(err, w, "not found")
+		pkg.ResponseErrorText(err, w, "not found")
 		return
 	}
 
