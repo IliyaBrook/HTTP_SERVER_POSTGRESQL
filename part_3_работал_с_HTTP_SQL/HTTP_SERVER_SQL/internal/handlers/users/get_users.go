@@ -2,18 +2,17 @@ package users
 
 import (
 	"database/sql"
-	"encoding/json"
 	"errors"
+	"github.com/gin-gonic/gin"
 	"main/internal/db"
 	"main/pkg"
 	"net/http"
 	"strconv"
 )
 
-func GetUsers(w http.ResponseWriter, r *http.Request) {
-	userId := r.URL.Query().Get("id")
+func GetUsers(c *gin.Context) {
+	userId := c.Query("id")
 	var err error
-	var resp []byte
 
 	if userId == "" {
 		var users []db.UserStruct
@@ -21,19 +20,18 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 		err = db.DB.Select(&users, "SELECT id, name, email, password, registered_at FROM users")
 		if err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
-				pkg.ResponseErrorText(err, w, "No rows")
+				pkg.ResponseErrorText(c, err, "No rows")
 				return
 			}
-			pkg.ResponseErrorText(err, w, "Failed to load users")
+			pkg.ResponseErrorText(c, err, "Failed to load users")
 			return
 		}
 
-		db.DatabaseInst.Users = users
-		resp, err = json.Marshal(db.DatabaseInst.Users)
+		c.JSON(http.StatusOK, users)
 	} else {
 		id, err := strconv.Atoi(userId)
 		if err != nil {
-			http.Error(w, "Invalid user ID", http.StatusBadRequest)
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
 			return
 		}
 
@@ -41,22 +39,10 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 
 		err = db.DB.Get(&user, "SELECT id, name, email, password, registered_at FROM users WHERE id=$1", id)
 		if err != nil {
-			http.Error(w, "User not found", http.StatusNotFound)
+			c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 			return
 		}
 
-		resp, err = json.Marshal(user)
-	}
-
-	if err != nil {
-		pkg.ResponseErrorText(err, w, "Failed to marshal users data")
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	_, writeUserErr := w.Write(resp)
-	if writeUserErr != nil {
-		pkg.ResponseErrorText(writeUserErr, w, "Failed to write response")
+		c.JSON(http.StatusOK, user)
 	}
 }

@@ -1,12 +1,12 @@
 package cors
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/rs/cors"
-	"net/http"
 )
 
-func CORSHandler(mux *http.ServeMux) http.Handler {
-	corsHandler := cors.New(cors.Options{
+func EnableCORS(r *gin.Engine) {
+	corsMiddleware := cors.New(cors.Options{
 		AllowOriginFunc: func(origin string) bool {
 			return true
 		},
@@ -14,7 +14,10 @@ func CORSHandler(mux *http.ServeMux) http.Handler {
 		AllowedHeaders:   []string{"Authorization", "Content-Type"},
 		ExposedHeaders:   []string{"Set-Cookie"},
 		AllowCredentials: true,
-	}).Handler
+	})
 
-	return corsHandler(mux)
+	r.Use(func(c *gin.Context) {
+		corsMiddleware.HandlerFunc(c.Writer, c.Request)
+		c.Next()
+	})
 }

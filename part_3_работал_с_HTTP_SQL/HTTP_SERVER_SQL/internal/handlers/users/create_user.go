@@ -1,18 +1,16 @@
 package users
 
 import (
-	"encoding/json"
+	"github.com/gin-gonic/gin"
 	"main/internal/db"
 	"main/pkg"
-	"net/http"
 )
 
-func CreateUser(w http.ResponseWriter, r *http.Request) {
+func CreateUser(c *gin.Context) {
 	var newUser db.UserStruct
-	err := json.NewDecoder(r.Body).Decode(&newUser)
-	defer r.Body.Close()
+	err := c.ShouldBindJSON(&newUser)
 	if err != nil {
-		pkg.ResponseErrorText(err, w, "Failed to marshal orders data")
+		pkg.ResponseErrorText(c, err, "Failed to marshal orders data")
 	}
 
 	rows, errInsert := db.DB.NamedQuery(
@@ -26,9 +24,9 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	if errInsert != nil {
-		pkg.ResponseErrorText(err, w, "Failed to create user")
+		pkg.ResponseErrorText(c, err, "Failed to create user")
 		return
 	}
 
-	w.Write([]byte("User created successfully."))
+	pkg.ResponseSuccessText(c, "User created successfully.")
 }

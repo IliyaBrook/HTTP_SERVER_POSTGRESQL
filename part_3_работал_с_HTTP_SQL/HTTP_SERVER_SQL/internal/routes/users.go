@@ -1,12 +1,17 @@
 package routes
 
 import (
-	"main/internal/handlers"
-	"main/internal/middlewares"
-	"net/http"
+	"github.com/gin-gonic/gin"
+	"main/internal/handlers/users"
 )
 
-func RegisterUserRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/users", middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleUsers)))
-	mux.HandleFunc("/userProducts", middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleUserProducts)))
+func RegisterUserRoutes(r *gin.Engine) {
+	route := WithMwsRoute(r)
+	{
+		route.GET("/users", users.GetUsers)
+		route.POST("/users", users.CreateUser)
+		route.PATCH("/users", users.UpdateUser)
+		route.DELETE("/users", users.DeleteUser)
+		route.GET("/user-products", users.GetUserProducts)
+	}
 }

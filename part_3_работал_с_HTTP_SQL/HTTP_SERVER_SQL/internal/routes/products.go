@@ -1,11 +1,16 @@
 package routes
 
 import (
-	"main/internal/handlers"
-	"main/internal/middlewares"
-	"net/http"
+	"github.com/gin-gonic/gin"
+	"main/internal/handlers/products"
 )
 
-func RegisterProductRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("/products", middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleProducts)))
+func RegisterProductsRoutes(r *gin.Engine) {
+	route := WithMwsRoute(r)
+	{
+		route.POST("/products", products.AddProduct)
+		route.DELETE("/products", products.DeleteProduct)
+		route.PATCH("/products", products.UpdateProduct)
+		route.GET("/products", products.GetProducts)
+	}
 }

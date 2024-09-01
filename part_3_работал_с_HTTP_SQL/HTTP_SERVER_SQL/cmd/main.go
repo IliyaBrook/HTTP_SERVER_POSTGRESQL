@@ -1,12 +1,12 @@
 package main
 
 import (
+	"github.com/gin-gonic/gin"
 	"log"
 	"main/internal/cors"
 	"main/internal/db"
 	"main/internal/env"
 	"main/internal/routes"
-	"net/http"
 )
 
 func main() {
@@ -15,14 +15,14 @@ func main() {
 	// init postgres sql db
 	database := db.InitDataBase()
 	defer database.Close()
-	mux := http.NewServeMux()
+	r := gin.Default()
 	// register routes
-	routes.RegisterUserRoutes(mux)
-	routes.RegisterProductRoutes(mux)
+	routes.RegisterUserRoutes(r)
+	routes.RegisterProductsRoutes(r)
 	// register cors
-	handler := cors.CORSHandler(mux)
+	cors.EnableCORS(r)
 
-	if err := http.ListenAndServe(":8080", handler); err != nil {
+	if err := r.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}
 }

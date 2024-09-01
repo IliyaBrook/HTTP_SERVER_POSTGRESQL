@@ -1,33 +1,38 @@
 package products
 
 import (
-	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"main/internal/db"
 	"main/pkg"
-	"net/http"
 )
 
-func AddProduct(w http.ResponseWriter, r *http.Request) {
-	userId := r.Context().Value("ID").(string)
+func AddProduct(c *gin.Context) {
+	userId, exists := c.Get("ID")
+	if !exists {
+		pkg.ResponseErrorText(c, fmt.Errorf("user ID not found"), "user ID is missing")
+		return
+	}
+	userIdStr, ok := userId.(string)
+	if !ok {
+		pkg.ResponseErrorText(c, fmt.Errorf("user ID is not a valid string"), "user ID is invalid")
+		return
+	}
+
+	var newProductData db.ProductStruct
+	if err := c.ShouldBindJSON(&newProductData); err != nil {
+		pkg.ResponseErrorText(c, err, "failed to decode request body product")
+		return
+	}
+
+	tx, err := db.DB.Beginx()
+	if err != nil {
+		pkg.ResponseErrorText(c, err, "failed to begin transaction")
+		return
+	}
+	defer tx.Rollback()
 
 	var newProdId int
-	var newProductData db.ProductStruct
-
-	err := json.NewDecoder(r.Body).Decode(&newProductData)
-	defer r.Body.Close()
-	if err != nil {
-		pkg.ResponseErrorText(err, w, "failed to decode request body product")
-		return
-	}
-
-	tx, errTxBegin := db.DB.Beginx()
-	defer tx.Rollback()
-	if errTxBegin != nil {
-		pkg.ResponseErrorText(err, w, "failed to begin transaction")
-		return
-	}
-
 	err = tx.QueryRowx(
 		`INSERT INTO products (Name, Quantity, Price, Description) 
 		VALUES ($1, $2, $3, $4) RETURNING id`,
@@ -35,30 +40,29 @@ func AddProduct(w http.ResponseWriter, r *http.Request) {
 	).Scan(&newProdId)
 
 	if err != nil {
-		pkg.ResponseErrorText(err, w, "error to add product")
+		pkg.ResponseErrorText(c, err, "error to add product")
 		return
 	}
 
 	if newProdId == 0 {
-		pkg.ResponseErrorText(fmt.Errorf("no ID returned"), w, "error to add product")
+		pkg.ResponseErrorText(c, fmt.Errorf("no ID returned"), "error to add product")
 		return
 	}
 
-	rows, errAddProd := tx.Queryx(
+	_, err = tx.Exec(
 		`INSERT INTO user_orders (user_id, product_id) VALUES ($1, $2)`,
-		userId, newProdId,
+		userIdStr, newProdId,
 	)
-	defer rows.Close()
 
-	if errAddProd != nil {
-		pkg.ResponseErrorText(err, w, "error to add product")
+	if err != nil {
+		pkg.ResponseErrorText(c, err, "error to add product")
 		return
 	}
 
 	if err = tx.Commit(); err != nil {
-		pkg.ResponseErrorText(err, w, "failed to commit transaction")
+		pkg.ResponseErrorText(c, err, "failed to commit transaction")
 		return
 	}
 
-	pkg.ResponseSuccessText(w, "Product added successfully")
+	pkg.ResponseSuccessText(c, "Product added successfully")
 }

@@ -1,27 +1,30 @@
 package pkg
 
 import (
-	"fmt"
+	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 )
 
-func ResponseErrorText(err error, resWriter http.ResponseWriter, message string) {
+func ResponseErrorText(c *gin.Context, err error, message string) {
 	if message == "" {
 		message = "An error occurred"
 	}
 
-	resWriter.WriteHeader(http.StatusInternalServerError)
-	resWriter.Write([]byte(message))
-	fmt.Println(message)
+	errorMessage := message
 	if err != nil {
-		resWriter.Write([]byte(": "))
-		resWriter.Write([]byte(err.Error()))
-		fmt.Printf("Error: %s\n", err)
+		errorMessage = message + ": " + err.Error()
+		log.Printf("Error: %s\n", err)
 	}
+
+	c.JSON(http.StatusInternalServerError, gin.H{
+		"error": errorMessage,
+	})
 }
 
-func ResponseSuccessText(resWriter http.ResponseWriter, message string) {
-	resWriter.WriteHeader(http.StatusOK)
-	resWriter.Write([]byte(message))
-	fmt.Printf("Success: %s\n", message)
+func ResponseSuccessText(c *gin.Context, message string) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": message,
+	})
+	log.Printf("Success: %s\n", message)
 }
