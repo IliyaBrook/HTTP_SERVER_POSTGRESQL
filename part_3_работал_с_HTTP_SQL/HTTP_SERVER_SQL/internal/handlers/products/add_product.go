@@ -3,7 +3,7 @@ package products
 import (
 	"encoding/json"
 	"fmt"
-	"main/data"
+	"main/internal/db"
 	"main/pkg"
 	"net/http"
 )
@@ -12,7 +12,7 @@ func AddProduct(w http.ResponseWriter, r *http.Request) {
 	userId := r.Context().Value("ID").(string)
 
 	var newProdId int
-	var newProductData data.ProductStruct
+	var newProductData db.ProductStruct
 
 	err := json.NewDecoder(r.Body).Decode(&newProductData)
 	defer r.Body.Close()
@@ -21,7 +21,7 @@ func AddProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tx, errTxBegin := data.DB.Beginx()
+	tx, errTxBegin := db.DB.Beginx()
 	defer tx.Rollback()
 	if errTxBegin != nil {
 		pkg.ResponseErrorText(err, w, "failed to begin transaction")

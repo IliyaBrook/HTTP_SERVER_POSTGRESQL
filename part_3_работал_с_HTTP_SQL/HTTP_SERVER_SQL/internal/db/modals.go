@@ -1,8 +1,8 @@
-package data
+package db
 
 import "time"
 
-type DbStruct struct {
+type DatabaseStruct struct {
 	Users  []UserStruct    `json:"users" db:"users"`
 	Orders []ProductStruct `json:"orders" db:"orders"`
 }

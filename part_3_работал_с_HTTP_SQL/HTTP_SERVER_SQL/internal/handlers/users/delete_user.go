@@ -2,7 +2,7 @@ package users
 
 import (
 	"encoding/json"
-	"main/data"
+	"main/internal/db"
 	"main/pkg"
 	"net/http"
 )
@@ -14,7 +14,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var deletedUserId int
-	tx, err := data.DB.Beginx()
+	tx, err := db.DB.Beginx()
 	defer tx.Rollback()
 
 	err = json.NewDecoder(r.Body).Decode(&userToDeleteStruct)

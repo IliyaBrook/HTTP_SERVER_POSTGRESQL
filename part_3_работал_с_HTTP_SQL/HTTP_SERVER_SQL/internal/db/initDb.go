@@ -1,4 +1,4 @@
-package data
+package db
 
 import (
 	"fmt"
@@ -30,5 +30,3 @@ func InitDataBase() *sqlx.DB {
 	fmt.Println("Connected to database")
 	return DB
 }
-
-var DbInst = &DbStruct{}

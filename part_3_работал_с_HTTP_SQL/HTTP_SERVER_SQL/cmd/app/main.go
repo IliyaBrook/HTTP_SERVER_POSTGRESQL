@@ -3,16 +3,15 @@ package main
 import (
 	"github.com/rs/cors"
 	"log"
-	"main/data"
-	"main/handlers"
-	"main/middlewares"
+	"main/internal/db"
+	"main/internal/routes"
 	"net/http"
 )
 
 func main() {
-	db := data.InitDataBase()
+	database := db.InitDataBase()
 	//goland:noinspection ALL
-	defer db.Close()
+	defer database.Close()
 
 	mux := http.NewServeMux()
 
@@ -29,16 +28,20 @@ func main() {
 
 	// users
 
-	mux.HandleFunc("/users",
-		middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleUsers)),
-	)
-	mux.HandleFunc("/userProducts",
-		middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleUserProducts)),
-	)
-	// orders
-	mux.HandleFunc("/products",
-		middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleProducts)),
-	)
+	//mux.HandleFunc("/users",
+	//	middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleUsers)),
+	//)
+	//mux.HandleFunc("/userProducts",
+	//	middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleUserProducts)),
+	//)
+	//// orders
+	//mux.HandleFunc("/products",
+	//	middlewares.AuthMiddleware(middlewares.LoggerMiddleware(handlers.HandleProducts)),
+	//)
+
+	// register routes
+	routes.RegisterUserRoutes(mux)
+	routes.RegisterProductRoutes(mux)
 
 	handler := corsHandler(mux)
 

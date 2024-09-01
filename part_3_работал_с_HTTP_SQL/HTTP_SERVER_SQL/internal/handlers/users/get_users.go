@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"errors"
-	"main/data"
+	"main/internal/db"
 	"main/pkg"
 	"net/http"
 	"strconv"
@@ -16,9 +16,9 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 	var resp []byte
 
 	if userId == "" {
-		var users []data.UserStruct
+		var users []db.UserStruct
 
-		err = data.DB.Select(&users, "SELECT id, name, email, password, registered_at FROM users")
+		err = db.DB.Select(&users, "SELECT id, name, email, password, registered_at FROM users")
 		if err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
 				pkg.ResponseErrorText(err, w, "No rows")
@@ -28,8 +28,8 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		data.DbInst.Users = users
-		resp, err = json.Marshal(data.DbInst.Users)
+		db.DatabaseInst.Users = users
+		resp, err = json.Marshal(db.DatabaseInst.Users)
 	} else {
 		id, err := strconv.Atoi(userId)
 		if err != nil {
@@ -37,9 +37,9 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		var user data.UserStruct
+		var user db.UserStruct
 
-		err = data.DB.Get(&user, "SELECT id, name, email, password, registered_at FROM users WHERE id=$1", id)
+		err = db.DB.Get(&user, "SELECT id, name, email, password, registered_at FROM users WHERE id=$1", id)
 		if err != nil {
 			http.Error(w, "User not found", http.StatusNotFound)
 			return

@@ -3,7 +3,7 @@ package products
 import (
 	"encoding/json"
 	"errors"
-	"main/data"
+	"main/internal/db"
 	"main/pkg"
 	"net/http"
 )
@@ -32,7 +32,7 @@ func UpdateProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = data.DB.Exec(query, args...)
+	_, err = db.DB.Exec(query, args...)
 	if err != nil {
 		pkg.ResponseErrorText(err, w, "Failed to execute update query")
 		return

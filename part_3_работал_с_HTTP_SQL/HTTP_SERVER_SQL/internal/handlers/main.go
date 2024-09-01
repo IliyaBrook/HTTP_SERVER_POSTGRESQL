@@ -1,21 +1,21 @@
 package handlers
 
 import (
-	"main/handlers/products"
-	"main/handlers/users"
+	products2 "main/internal/handlers/products"
+	users2 "main/internal/handlers/users"
 	"net/http"
 )
 
 func HandleUsers(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		users.GetUsers(w, r)
+		users2.GetUsers(w, r)
 	case http.MethodPatch:
-		users.UpdateUser(w, r)
+		users2.UpdateUser(w, r)
 	case http.MethodPost:
-		users.CreateUser(w, r)
+		users2.CreateUser(w, r)
 	case http.MethodDelete:
-		users.DeleteUser(w, r)
+		users2.DeleteUser(w, r)
 	default:
 		w.WriteHeader(http.StatusNotImplemented)
 	}
@@ -23,20 +23,20 @@ func HandleUsers(w http.ResponseWriter, r *http.Request) {
 
 func HandleUserProducts(w http.ResponseWriter, r *http.Request) {
 	if http.MethodGet == r.Method {
-		users.GetUserProducts(w, r)
+		users2.GetUserProducts(w, r)
 	}
 }
 
 func HandleProducts(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		products.GetProducts(w, r)
+		products2.GetProducts(w, r)
 	case http.MethodPost:
-		products.AddProduct(w, r)
+		products2.AddProduct(w, r)
 	case http.MethodPatch:
-		products.UpdateProduct(w, r)
+		products2.UpdateProduct(w, r)
 	case http.MethodDelete:
-		products.DeleteProduct(w, r)
+		products2.DeleteProduct(w, r)
 	default:
 		w.WriteHeader(http.StatusNotImplemented)
 	}

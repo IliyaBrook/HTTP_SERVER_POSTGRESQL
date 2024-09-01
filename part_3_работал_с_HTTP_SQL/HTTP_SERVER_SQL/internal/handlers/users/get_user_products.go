@@ -3,13 +3,13 @@ package users
 import (
 	"encoding/json"
 	"errors"
-	"main/data"
+	"main/internal/db"
 	"main/pkg"
 	"net/http"
 )
 
 func GetUserProducts(w http.ResponseWriter, r *http.Request) {
-	var userOrders []data.ProductStruct
+	var userOrders []db.ProductStruct
 
 	var err error
 	var ordersJson []byte
@@ -23,7 +23,7 @@ func GetUserProducts(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	err = data.DB.Select(&userOrders,
+	err = db.DB.Select(&userOrders,
 		`
 		SELECT p.*
 		FROM products p

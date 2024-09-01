@@ -3,7 +3,7 @@ package products
 import (
 	"encoding/json"
 	"log"
-	"main/data"
+	"main/internal/db"
 	"main/pkg"
 	"net/http"
 )
@@ -13,7 +13,7 @@ func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 		ID int `db:"id"`
 	}
 
-	tx, err := data.DB.Beginx()
+	tx, err := db.DB.Beginx()
 	defer tx.Rollback()
 
 	if err != nil {

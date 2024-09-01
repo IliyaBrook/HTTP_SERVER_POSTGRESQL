@@ -2,20 +2,20 @@ package users
 
 import (
 	"encoding/json"
-	"main/data"
+	"main/internal/db"
 	"main/pkg"
 	"net/http"
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	var newUser data.UserStruct
+	var newUser db.UserStruct
 	err := json.NewDecoder(r.Body).Decode(&newUser)
 	defer r.Body.Close()
 	if err != nil {
 		pkg.ResponseErrorText(err, w, "Failed to marshal orders data")
 	}
 
-	rows, errInsert := data.DB.NamedQuery(
+	rows, errInsert := db.DB.NamedQuery(
 		"INSERT INTO users (name, email, password) VALUES (:name, :email, :password) RETURNING id",
 		map[string]interface{}{
 			"name":     newUser.Name,
