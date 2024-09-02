@@ -3,14 +3,14 @@ package users
 import (
 	"github.com/gin-gonic/gin"
 	"main/internal/db"
-	"main/pkg"
+	"main/internal/utils"
 )
 
 func CreateUser(c *gin.Context) {
 	var newUser db.UserStruct
 	err := c.ShouldBindJSON(&newUser)
 	if err != nil {
-		pkg.ResponseErrorText(c, err, "Failed to marshal orders data")
+		utils.ResponseErrorText(c, err, "Failed to marshal orders data")
 	}
 
 	rows, errInsert := db.DB.NamedQuery(
@@ -24,9 +24,9 @@ func CreateUser(c *gin.Context) {
 	defer rows.Close()
 
 	if errInsert != nil {
-		pkg.ResponseErrorText(c, err, "Failed to create user")
+		utils.ResponseErrorText(c, err, "Failed to create user")
 		return
 	}
 
-	pkg.ResponseSuccessText(c, "User created successfully.")
+	utils.ResponseSuccessText(c, "User created successfully.")
 }

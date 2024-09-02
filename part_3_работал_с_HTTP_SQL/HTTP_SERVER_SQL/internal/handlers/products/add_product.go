@@ -4,30 +4,40 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"main/internal/db"
-	"main/pkg"
+	"main/internal/utils"
 )
 
+// AddProduct
+// @Summary AddProduct
+// @Description add product
+// @Tags products
+// @Accept  json
+// @Produce  json
+// @Param product body ProductStruct true "Product data"
+// @Success 200 {string} string	"Product added successfully"
+// @Failure 400 {string} string "error to add product"
+// @Router /products [post]
 func AddProduct(c *gin.Context) {
 	userId, exists := c.Get("ID")
 	if !exists {
-		pkg.ResponseErrorText(c, fmt.Errorf("user ID not found"), "user ID is missing")
+		utils.ResponseErrorText(c, fmt.Errorf("user ID not found"), "user ID is missing")
 		return
 	}
 	userIdStr, ok := userId.(string)
 	if !ok {
-		pkg.ResponseErrorText(c, fmt.Errorf("user ID is not a valid string"), "user ID is invalid")
+		utils.ResponseErrorText(c, fmt.Errorf("user ID is not a valid string"), "user ID is invalid")
 		return
 	}
 
 	var newProductData db.ProductStruct
 	if err := c.ShouldBindJSON(&newProductData); err != nil {
-		pkg.ResponseErrorText(c, err, "failed to decode request body product")
+		utils.ResponseErrorText(c, err, "failed to decode request body product")
 		return
 	}
 
 	tx, err := db.DB.Beginx()
 	if err != nil {
-		pkg.ResponseErrorText(c, err, "failed to begin transaction")
+		utils.ResponseErrorText(c, err, "failed to begin transaction")
 		return
 	}
 	defer tx.Rollback()
@@ -40,12 +50,12 @@ func AddProduct(c *gin.Context) {
 	).Scan(&newProdId)
 
 	if err != nil {
-		pkg.ResponseErrorText(c, err, "error to add product")
+		utils.ResponseErrorText(c, err, "error to add product")
 		return
 	}
 
 	if newProdId == 0 {
-		pkg.ResponseErrorText(c, fmt.Errorf("no ID returned"), "error to add product")
+		utils.ResponseErrorText(c, fmt.Errorf("no ID returned"), "error to add product")
 		return
 	}
 
@@ -55,14 +65,14 @@ func AddProduct(c *gin.Context) {
 	)
 
 	if err != nil {
-		pkg.ResponseErrorText(c, err, "error to add product")
+		utils.ResponseErrorText(c, err, "error to add product")
 		return
 	}
 
 	if err = tx.Commit(); err != nil {
-		pkg.ResponseErrorText(c, err, "failed to commit transaction")
+		utils.ResponseErrorText(c, err, "failed to commit transaction")
 		return
 	}
 
-	pkg.ResponseSuccessText(c, "Product added successfully")
+	utils.ResponseSuccessText(c, "Product added successfully")
 }

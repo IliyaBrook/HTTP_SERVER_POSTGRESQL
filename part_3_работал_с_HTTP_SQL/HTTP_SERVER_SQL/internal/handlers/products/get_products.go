@@ -3,7 +3,7 @@ package products
 import (
 	"github.com/gin-gonic/gin"
 	"main/internal/db"
-	"main/pkg"
+	"main/internal/utils"
 	"net/http"
 )
 
@@ -15,13 +15,13 @@ func GetProducts(c *gin.Context) {
 	if productId != "" {
 		err = db.DB.Select(&ordersData, "SELECT * FROM products WHERE id = $1", productId)
 		if err != nil {
-			pkg.ResponseErrorText(c, err, "Error to get product by id")
+			utils.ResponseErrorText(c, err, "Error to get product by id")
 			return
 		}
 	} else {
 		err = db.DB.Select(&ordersData, "SELECT * FROM products")
 		if err != nil {
-			pkg.ResponseErrorText(c, err, "Error to get products")
+			utils.ResponseErrorText(c, err, "Error to get products")
 			return
 		}
 	}

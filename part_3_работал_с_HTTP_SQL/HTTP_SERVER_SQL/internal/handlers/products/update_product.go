@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"main/internal/db"
-	"main/pkg"
+	"main/internal/utils"
 )
 
 func UpdateProduct(c *gin.Context) {
@@ -14,23 +14,23 @@ func UpdateProduct(c *gin.Context) {
 
 	if updatedProductId == "" {
 		noIdErr := errors.New("id not found")
-		pkg.ResponseErrorText(c, noIdErr, "Missing id parameter")
+		utils.ResponseErrorText(c, noIdErr, "Missing id parameter")
 		return
 	}
 
 	err = c.ShouldBindJSON(&updatedProductData)
 
-	query, args, queryErr := pkg.BuildSQLDynamic("UPDATE", "products", updatedProductData, "id = $1", updatedProductId)
+	query, args, queryErr := utils.BuildSQLDynamic("UPDATE", "products", updatedProductData, "id = $1", updatedProductId)
 	if err != nil {
-		pkg.ResponseErrorText(c, queryErr, "Failed to build update query")
+		utils.ResponseErrorText(c, queryErr, "Failed to build update query")
 		return
 	}
 
 	_, err = db.DB.Exec(query, args...)
 	if err != nil {
-		pkg.ResponseErrorText(c, err, "Failed to execute update query")
+		utils.ResponseErrorText(c, err, "Failed to execute update query")
 		return
 	}
 
-	pkg.ResponseSuccessText(c, "Product updated successfully")
+	utils.ResponseSuccessText(c, "Product updated successfully")
 }

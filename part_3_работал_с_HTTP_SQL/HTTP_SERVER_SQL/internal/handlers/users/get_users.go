@@ -5,7 +5,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"main/internal/db"
-	"main/pkg"
+	"main/internal/utils"
 	"net/http"
 	"strconv"
 )
@@ -20,10 +20,10 @@ func GetUsers(c *gin.Context) {
 		err = db.DB.Select(&users, "SELECT id, name, email, password, registered_at FROM users")
 		if err != nil {
 			if errors.Is(err, sql.ErrNoRows) {
-				pkg.ResponseErrorText(c, err, "No rows")
+				utils.ResponseErrorText(c, err, "No rows")
 				return
 			}
-			pkg.ResponseErrorText(c, err, "Failed to load users")
+			utils.ResponseErrorText(c, err, "Failed to load users")
 			return
 		}
 

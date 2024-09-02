@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"main/internal/db"
-	"main/pkg"
+	"main/internal/utils"
 )
 
 func DeleteProduct(c *gin.Context) {
@@ -15,37 +15,37 @@ func DeleteProduct(c *gin.Context) {
 
 	tx, err := db.DB.Beginx()
 	if err != nil {
-		pkg.ResponseErrorText(c, err, "failed to begin transaction")
+		utils.ResponseErrorText(c, err, "failed to begin transaction")
 		return
 	}
 
 	if err := c.ShouldBindJSON(&deletedProduct); err != nil {
-		pkg.ResponseErrorText(c, err, "failed to decode request body")
+		utils.ResponseErrorText(c, err, "failed to decode request body")
 		return
 	}
 	log.Println("product id from body:", deletedProduct.ID)
 
 	if deletedProduct.ID == 0 {
-		pkg.ResponseErrorText(c, fmt.Errorf("invalid product ID"), "failed to get deleted product id")
+		utils.ResponseErrorText(c, fmt.Errorf("invalid product ID"), "failed to get deleted product id")
 		return
 	}
 
 	_, err = tx.NamedExec("DELETE FROM products WHERE id=:id", &deletedProduct)
 	if err != nil {
-		pkg.ResponseErrorText(c, err, "failed to delete product")
+		utils.ResponseErrorText(c, err, "failed to delete product")
 		return
 	}
 
 	_, err = tx.Exec("DELETE FROM user_orders WHERE product_id=$1", deletedProduct.ID)
 	if err != nil {
-		pkg.ResponseErrorText(c, err, "failed to delete product from user orders")
+		utils.ResponseErrorText(c, err, "failed to delete product from user orders")
 		return
 	}
 
 	if err = tx.Commit(); err != nil {
-		pkg.ResponseErrorText(c, err, "failed to commit transaction")
+		utils.ResponseErrorText(c, err, "failed to commit transaction")
 		return
 	}
 
-	pkg.ResponseSuccessText(c, "Product successfully deleted")
+	utils.ResponseSuccessText(c, "Product successfully deleted")
 }

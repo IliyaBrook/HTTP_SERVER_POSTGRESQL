@@ -4,15 +4,18 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"main/config"
-	"main/internal/cors"
 	"main/internal/db"
 	"main/internal/routes"
-	"main/pkg"
+	"main/internal/utils"
 	"strings"
 )
 
+// @title HTTP TEST SERVER
+// @description This is a test server for HTTP requests
+// @contact.name  Iliya Brook
+// @contact.email iliyabrook1987@gmail.com
 func main() {
-	pkg.LoadEnvs()
+	utils.LoadEnvs()
 	if config.CfgApp.Mode == "prod" {
 		gin.SetMode(gin.ReleaseMode)
 	}
@@ -32,7 +35,7 @@ func main() {
 	routes.RegisterUserRoutes(r)
 	routes.RegisterProductsRoutes(r)
 	// register cors
-	cors.EnableCORS(r)
+	utils.EnableCORS(r)
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}

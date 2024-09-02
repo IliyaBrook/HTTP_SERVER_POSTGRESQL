@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/gin-gonic/gin"
 	"main/internal/db"
-	"main/pkg"
+	"main/internal/utils"
 	"net/http"
 )
 
@@ -17,7 +17,7 @@ func GetUserProducts(c *gin.Context) {
 	if userId = c.Query("id"); userId == "" {
 		if userId = c.Request.Header.Get("x-id"); userId == "" {
 			err = errors.New("failed to get id from body")
-			pkg.ResponseErrorText(c, err, "failed to get id from body")
+			utils.ResponseErrorText(c, err, "failed to get id from body")
 			return
 		}
 	}
@@ -33,11 +33,11 @@ func GetUserProducts(c *gin.Context) {
 	)
 
 	if err != nil || len(userOrders) == 0 {
-		pkg.ResponseErrorText(c, err, "not found")
+		utils.ResponseErrorText(c, err, "not found")
 		return
 	}
 
 	c.JSON(http.StatusOK, &userOrders)
 
-	pkg.ResponseSuccessText(c, "ok")
+	utils.ResponseSuccessText(c, "ok")
 }
