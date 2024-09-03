@@ -10,6 +10,18 @@ import (
 	"strconv"
 )
 
+// @Summary Get users
+// @Description get users, If no id is provided, returns all users.
+// @Tags users
+// @Accept  json
+// @Produce  json
+// @Param id query string false "User ID"
+// @Param x-id header string true "X-ID" default(1)
+// @Success 200 {array} db.UserStruct "Users"
+// @Failure 400 {string} string "Invalid user ID"
+// @Failure 404 {string} string "User not found"
+// @Failure 500 {string} string "Failed to load users"
+// @Router /users [get]
 func GetUsers(c *gin.Context) {
 	userId := c.Query("id")
 	var err error

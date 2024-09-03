@@ -8,6 +8,17 @@ import (
 	"main/internal/utils"
 )
 
+// @Summary Delete product
+// @Description delete product
+// @Tags products
+// @Accept  json
+// @Produce  json
+// @Param id body int true "Product ID"
+// @Param x-id header string true "X-ID" default(1)
+// @Success 200 {string} string "Product successfully deleted"
+// @Failure 400 {string} string "Invalid product ID"
+// @Failure 500 {string} string "Failed to delete product"
+// @Router /products [delete]
 func DeleteProduct(c *gin.Context) {
 	var deletedProduct struct {
 		ID int `json:"id" db:"id"`

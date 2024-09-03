@@ -4,10 +4,14 @@ import (
 	"fmt"
 	"log"
 	"main/config"
+	"os"
+	"path/filepath"
 )
 
 func LoadEnvs() {
-	if err := config.New[config.DbConfig]("../config", "db", &config.CfgDb); err != nil {
+	rootPath, _ := os.Getwd()
+	configPath := filepath.Join(rootPath, "config")
+	if err := config.New[config.DbConfig](configPath, "db", &config.CfgDb); err != nil {
 		fmt.Println("Error reading .env file for DB", err)
 		log.Fatal(err)
 	}

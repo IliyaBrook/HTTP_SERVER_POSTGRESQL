@@ -1,4 +1,4 @@
 ### simple get
 #@no-log
-GET http://localhost:8080/users
+GET http://localhost:8080/users?id=1
 x-id: 1

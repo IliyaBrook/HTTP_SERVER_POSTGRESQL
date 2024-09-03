@@ -2,8 +2,11 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	_ "github.com/swaggo/files"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"main/config"
+	"main/docs"
 	"main/internal/db"
 	"main/internal/routes"
 	"main/internal/utils"
@@ -14,6 +17,7 @@ import (
 // @description This is a test server for HTTP requests
 // @contact.name  Iliya Brook
 // @contact.email iliyabrook1987@gmail.com
+// @version 1.0
 func main() {
 	utils.LoadEnvs()
 	if config.CfgApp.Mode == "prod" {
@@ -31,6 +35,10 @@ func main() {
 			log.Fatalf("Failed to set trusted proxies: %v", err)
 		}
 	}
+	// Swagger info and initialisation
+	docs.SwaggerInfo.Host = "localhost:8080"
+	docs.SwaggerInfo.BasePath = "/"
+	r.GET("/swagger/*any", gin.WrapH(httpSwagger.WrapHandler))
 	// register routes
 	routes.RegisterUserRoutes(r)
 	routes.RegisterProductsRoutes(r)
@@ -39,4 +47,5 @@ func main() {
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}
+
 }

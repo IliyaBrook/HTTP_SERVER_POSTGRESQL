@@ -7,13 +7,13 @@ import (
 	"main/internal/utils"
 )
 
-// AddProduct
-// @Summary AddProduct
+// @Summary Add product
 // @Description add product
 // @Tags products
 // @Accept  json
 // @Produce  json
-// @Param product body ProductStruct true "Product data"
+// @Param product body db.ProductStruct true "Product data"
+// @Param x-id header string true "X-ID" default(1)
 // @Success 200 {string} string	"Product added successfully"
 // @Failure 400 {string} string "error to add product"
 // @Router /products [post]

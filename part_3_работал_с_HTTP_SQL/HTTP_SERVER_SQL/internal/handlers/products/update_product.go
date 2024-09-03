@@ -7,6 +7,17 @@ import (
 	"main/internal/utils"
 )
 
+// @Summary Update product
+// @Description update product
+// @Tags products
+// @Accept  json
+// @Produce  json
+// @Param id query string true "Product ID"
+// @Param x-id header string true "X-ID" default(1)
+// @Success 200 {string} string "Product updated successfully"
+// @Failure 400 {string} string "Missing id parameter"
+// @Failure 500 {string} string "Failed to execute update query"
+// @Router /products [patch]
 func UpdateProduct(c *gin.Context) {
 	updatedProductId := c.Query("id")
 	var updatedProductData map[string]interface{}

@@ -11,7 +11,9 @@ import (
 
 func InitDataBase() *sqlx.DB {
 	var err error
-	DB, err = sqlx.Open("postgres", "host=localhost port=5432 user="+config.CfgDb.DBUser+" password="+config.CfgDb.DBPassword+" dbname=postgres sslmode=disable search_path=golang_course")
+	dbString := fmt.Sprintf("host=localhost port=5432 user=%s password=%s dbname=postgres sslmode=disable search_path=golang_course", config.CfgDb.DBUser, config.CfgDb.DBPassword)
+	DB, err = sqlx.Open("postgres", dbString)
+
 	if err != nil {
 		log.Fatal(err)
 	}

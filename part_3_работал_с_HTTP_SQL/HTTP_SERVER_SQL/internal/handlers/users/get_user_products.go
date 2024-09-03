@@ -8,6 +8,17 @@ import (
 	"net/http"
 )
 
+// @Summary Get user products
+// @Description get user products
+// @Tags users
+// @Accept  json
+// @Produce  json
+// @Param id query string true "User ID"
+// @Param x-id header string true "X-ID" default(1)
+// @Success 200 {array} db.ProductStruct "User products"
+// @Failure 400 {string} string "failed to get id from body"
+// @Failure 500 {string} string "not found"
+// @Router /userProducts [get]
 func GetUserProducts(c *gin.Context) {
 	var userOrders []db.ProductStruct
 

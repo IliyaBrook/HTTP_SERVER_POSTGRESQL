@@ -49,7 +49,6 @@ func main() {
 	routes.RouteFunctions(mux)
 
 	handler := corsHandler(mux)
-
 	if err := http.ListenAndServe(":"+port, handler); err != nil {
 		log.Fatal(err)
 	}

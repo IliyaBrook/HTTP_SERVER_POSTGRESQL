@@ -6,6 +6,17 @@ import (
 	"main/internal/utils"
 )
 
+// @Summary Delete user
+// @Description delete user
+// @Tags users
+// @Accept  json
+// @Produce  json
+// @Param id body int true "User ID"
+// @Param x-id header string true "X-ID" default(1)
+// @Success 200 {string} string "User deleted successfully"
+// @Failure 400 {string} string "Failed to marshal body"
+// @Failure 500 {string} string "Failed to commit transaction"
+// @Router /users [delete]
 func DeleteUser(c *gin.Context) {
 
 	var userToDeleteStruct struct {
