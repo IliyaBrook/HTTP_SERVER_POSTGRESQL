@@ -2,7 +2,7 @@ package utils
 
 import (
 	"github.com/gin-gonic/gin"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 )
 
@@ -14,7 +14,7 @@ func ResponseErrorText(c *gin.Context, err error, message string) {
 	errorMessage := message
 	if err != nil {
 		errorMessage = message + ": " + err.Error()
-		log.Printf("Error: %s\n", err)
+		log.Error("Error: %s\n", err)
 	}
 
 	c.JSON(http.StatusInternalServerError, gin.H{
@@ -26,5 +26,5 @@ func ResponseSuccessText(c *gin.Context, message string) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": message,
 	})
-	log.Printf("Success: %s\n", message)
+	log.Info("Success: %s\n", message)
 }

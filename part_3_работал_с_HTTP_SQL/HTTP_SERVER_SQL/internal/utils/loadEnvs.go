@@ -1,22 +1,18 @@
 package utils
 
 import (
-	"fmt"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"main/config"
-	"os"
-	"path/filepath"
 )
 
 func LoadEnvs() {
-	rootPath, _ := os.Getwd()
-	configPath := filepath.Join(rootPath, "config")
+	configPath := AbsPathJoin("config")
 	if err := config.New[config.DbConfig](configPath, "db", &config.CfgDb); err != nil {
-		fmt.Println("Error reading .env file for DB", err)
+		log.Error("Error reading .env file for DB", err)
 		log.Fatal(err)
 	}
-	if err := config.New[config.AppConfig]("../config", "app", &config.CfgApp); err != nil {
-		fmt.Println("Error reading .env file for APP", err)
+	if err := config.New[config.AppConfig](configPath, "app", &config.CfgApp); err != nil {
+		log.Error("Error reading .env file for APP", err)
 		log.Fatal(err)
 	}
 }
