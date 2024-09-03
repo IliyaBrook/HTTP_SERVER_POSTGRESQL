@@ -1,0 +1,315 @@
+definitions:
+  db.ProductStruct:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+      quantity:
+        type: integer
+    type: object
+  db.UserStruct:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      registered_at:
+        type: string
+    type: object
+info:
+  contact:
+    email: iliyabrook1987@gmail.com
+    name: Iliya Brook
+  description: This is a test server for HTTP requests
+  title: HTTP TEST SERVER
+  version: "1.0"
+paths:
+  /products:
+    delete:
+      consumes:
+      - application/json
+      description: delete product
+      parameters:
+      - description: Product ID
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      - default: "1"
+        description: X-ID
+        in: header
+        name: x-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product successfully deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid product ID
+          schema:
+            type: string
+        "500":
+          description: Failed to delete product
+          schema:
+            type: string
+      summary: Delete product
+      tags:
+      - products
+    get:
+      consumes:
+      - application/json
+      description: get products. If no id is provided, returns all products.
+      parameters:
+      - description: Product ID
+        in: query
+        name: id
+        type: string
+      - default: "1"
+        description: X-ID
+        in: header
+        name: x-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Products
+          schema:
+            items:
+              $ref: '#/definitions/db.ProductStruct'
+            type: array
+        "400":
+          description: Error to get product by id
+          schema:
+            type: string
+        "500":
+          description: Error to get products
+          schema:
+            type: string
+      summary: Get products
+      tags:
+      - products
+    patch:
+      consumes:
+      - application/json
+      description: update product
+      parameters:
+      - description: Product ID
+        in: query
+        name: id
+        required: true
+        type: string
+      - default: "1"
+        description: X-ID
+        in: header
+        name: x-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product updated successfully
+          schema:
+            type: string
+        "400":
+          description: Missing id parameter
+          schema:
+            type: string
+        "500":
+          description: Failed to execute update query
+          schema:
+            type: string
+      summary: Update product
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: add product
+      parameters:
+      - description: Product data
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/db.ProductStruct'
+      - default: "1"
+        description: X-ID
+        in: header
+        name: x-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Product added successfully
+          schema:
+            type: string
+        "400":
+          description: error to add product
+          schema:
+            type: string
+      summary: Add product
+      tags:
+      - products
+  /userProducts:
+    get:
+      consumes:
+      - application/json
+      description: get user products
+      parameters:
+      - description: User ID
+        in: query
+        name: id
+        required: true
+        type: string
+      - default: "1"
+        description: X-ID
+        in: header
+        name: x-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User products
+          schema:
+            items:
+              $ref: '#/definitions/db.ProductStruct'
+            type: array
+        "400":
+          description: failed to get id from body
+          schema:
+            type: string
+        "500":
+          description: not found
+          schema:
+            type: string
+      summary: Get user products
+      tags:
+      - users
+  /users:
+    delete:
+      consumes:
+      - application/json
+      description: delete user
+      parameters:
+      - description: User ID
+        in: body
+        name: id
+        required: true
+        schema:
+          type: integer
+      - default: "1"
+        description: X-ID
+        in: header
+        name: x-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User deleted successfully
+          schema:
+            type: string
+        "400":
+          description: Failed to marshal body
+          schema:
+            type: string
+        "500":
+          description: Failed to commit transaction
+          schema:
+            type: string
+      summary: Delete user
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: get users, If no id is provided, returns all users.
+      parameters:
+      - description: User ID
+        in: query
+        name: id
+        type: string
+      - default: "1"
+        description: X-ID
+        in: header
+        name: x-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Users
+          schema:
+            items:
+              $ref: '#/definitions/db.UserStruct'
+            type: array
+        "400":
+          description: Invalid user ID
+          schema:
+            type: string
+        "404":
+          description: User not found
+          schema:
+            type: string
+        "500":
+          description: Failed to load users
+          schema:
+            type: string
+      summary: Get users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: create user
+      parameters:
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/db.UserStruct'
+      - default: "1"
+        description: X-ID
+        in: header
+        name: x-id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User created successfully
+          schema:
+            type: string
+        "400":
+          description: Failed to create user
+          schema:
+            type: string
+      summary: Create user
+      tags:
+      - users
+swagger: "2.0"
