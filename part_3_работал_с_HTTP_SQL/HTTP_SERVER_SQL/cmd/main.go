@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 	_ "github.com/swaggo/files"
 	httpSwagger "github.com/swaggo/http-swagger"
-	"log"
 	"main/config"
 	"main/docs"
 	"main/internal/db"
@@ -19,6 +19,7 @@ import (
 // @contact.email iliyabrook1987@gmail.com
 // @version 1.0
 func main() {
+	utils.InitCustomLogger()
 	utils.LoadEnvs()
 	if config.CfgApp.Mode == "prod" {
 		gin.SetMode(gin.ReleaseMode)
@@ -44,8 +45,8 @@ func main() {
 	routes.RegisterProductsRoutes(r)
 	// register cors
 	utils.EnableCORS(r)
+	log.Println("test loggers")
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal(err)
 	}
-
 }
