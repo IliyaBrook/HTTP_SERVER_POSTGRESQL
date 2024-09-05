@@ -52,9 +52,9 @@ func (f *customFormatter) Format(entry *log.Entry) ([]byte, error) {
 
 	if fields == "" {
 		formatted = fmt.Sprintf(`{
-	%s"time": "%s"%s,
-	%s"path": "%s"%s
-	%s"message": "%s"%s
+%s"time":"%s"%s,
+%s"%s"%s
+%s"message":"%s"%s
 }`,
 			colorGreen, timestamp, colorReset,
 			colorBlue, path, colorReset,

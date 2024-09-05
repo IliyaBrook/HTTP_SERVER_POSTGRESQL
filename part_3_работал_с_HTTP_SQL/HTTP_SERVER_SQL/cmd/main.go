@@ -46,14 +46,6 @@ func main() {
 	routes.RegisterProductsRoutes(r)
 	// register cors
 	utils.EnableCORS(r)
-	log.Info("Simple Info log")
-	log.Info("Simple Info log 2")
-	log.Info("-----------------")
-	log.WithFields(log.Fields{
-		"host": "localhost",
-		"port": "8080",
-	}).Info("Server started")
-
 	if err := r.Run(":8080"); err != nil {
 		log.Error(err)
 	}
